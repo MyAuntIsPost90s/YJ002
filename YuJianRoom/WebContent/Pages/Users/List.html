@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>用户管理</title>
+</head>
+<body>
+    <table id="tt" title="用户列表" style="width:100%;height:100%"
+           data-options='url:"/YuJianRoom/Users/GetList"
+           ,fit:"true"
+           ,fitColumns:"true"
+           ,toolbar:"#tb"
+		   ,rownumbers:"true"
+           ,pagination:"true"'>
+        <thead>
+            <tr>
+                <th data-options="field:'userid',width:50,align:'center'">账号编号</th>
+                <th data-options="field:'realname',width:100,align:'center'">姓名</th>
+                <th data-options="field:'headimgurl',width:100,align:'center',formatter:FormatImg">头像</th>
+                <th data-options="field:'birthday',width:100,align:'center'">出生日期</th>
+                <th data-options="field:'height',width:100,align:'center'">身高(cm)</th>
+                <th data-options="field:'sex',width:100,align:'center', formatter:FormatSex">性别</th>
+                <th data-options="field:'record',width:100,align:'center'">学历</th>
+                <th data-options="field:'occupation',width:100,align:'center'">职业</th>   
+                <th data-options="field:'hotcount',width:50,align:'center'">热度</th>
+                <th data-options="field:'goldbalance',width:100,align:'center'">金币数</th>
+                <th data-options="field:'married',width:100,align:'center',formatter:FormatMarried">是否结婚</th>   
+                <th data-options="field:'usertype',width:100,align:'center',formatter:FormatType">用户类型</th>
+                
+                <th data-options="field:'videourl',width:100,align:'center',hidden:true">视频路径</th>
+                <th data-options="field:'address',width:100,align:'center',hidden:true">地址</th> 
+                <th data-options="field:'qqnum',width:100,align:'center',hidden:true">QQ号</th>
+                <th data-options="field:'weixinnum',width:100,align:'center',hidden:true">微信号</th>
+                <th data-options="field:'hobby',width:100,align:'center',hidden:true">爱好</th>
+                <th data-options="field:'phone',width:100,align:'center',hidden:true">手机号</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb" style="padding:5px;height:auto">
+        <div>
+        	用户类型：
+        	<select id="sel-usertype" name="usertype" class="easyui-combobox" style="width: 90px" data-options="editable:false,panelHeight:'auto'">
+				<option value="">全部</option>
+				<option value="0">普通用户</option>
+				<option value="1">VIP</option>
+				<option value="2">管理员</option>
+			</select>
+			学历：
+			<select id="sel-record" name="record" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                <option value="">全部</option>
+                <option value="小学">小学</option>
+                <option value="初中">初中</option>
+                <option value="高中">高中</option>
+                <option value="大专">大专</option>
+                <option value="本科">本科</option>
+                <option value="研究生">研究生</option>
+                <option value="硕士">硕士</option>
+                <option value="博士">博士</option>
+            </select>
+			性别：
+        	<select id="sel-sex" name="sex" class="easyui-combobox" style="width: 70px" data-options="editable:false,panelHeight:'auto'">
+				<option value="">全部</option>
+				<option value="0">女</option>
+				<option value="1">男</option>
+			</select>
+			身高：
+			<select id="sel-height" name="height" style="width: 100px" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'">
+				<option value="">全部</option>
+				<option value="140-150">140-150</option>
+				<option value="150-160">150-160</option>
+				<option value="160-170">160-170</option>
+				<option value="170-180">170-180</option>
+				<option value="180-190">180-190</option>
+				<option value="190-200">190-200</option>
+			</select>
+			地址：
+			<select id="sel-address" name="address" class="easyui-combobox" style="width: 80px" 
+			data-options="editable:false
+			,panelHeight:'auto'
+			,textField:'text'
+			,valueField:'id'"></select>
+			查询：
+            <input id="condition" class="easyui-textbox" type="text" name="condition" />
+            <button onclick="LoadData()" type="button" class="easyui-linkbutton" data-options='iconCls:"icon-search"'>确定</button>
+        </div>
+    </div>
+
+    <!-- 弹窗部分 -->
+    <div id="AddDialog" class="easyui-dialog" style="width:490px;height:615px"
+         data-options="title:'添加/修改用户基本信息',buttons:'#bb',modal:true,closed:true">
+        <div style="padding:10px;">
+        <form id="ff" action="" method="post" enctype="multipart/form-data" >
+            <input id="userid" type="hidden" name="userid" />
+            <input name="hotcount" type="hidden" />
+            <input name="riches" type="hidden" />
+            <input name="createtime" type="hidden" />
+            <input name="headimgurl" type="hidden" />
+            <input name="videourl" type="hidden" />
+            <input name="weixinuid" type="hidden" />
+            <input name="weixinoid" type="hidden" />
+            <input name="weixinnum" type="hidden" />
+            <input name="qqnum" type="hidden" />
+            <input name="selectcondition" type="hidden" />
+            <input name="matchmakerintroduct" type="hidden" />
+            <input name="matchmakergoodat" type="hidden" />
+			<input name="matchmakertype" type="hidden" />
+			<input name="matchmakeradvise" type="hidden" />
+            <table>
+            	<tr id="headimg-bar">
+            		<td>头像：</td>
+                    <td><img id="headimgurl" src="" width="80" height="80"></td>
+            	</tr>
+                <tr>
+                    <td>姓名：</td>
+                    <td>
+                        <input id="realname" class="easyui-textbox" type="text" name="realname" data-options="required:true,validType:'length[1,40]'" />
+                    </td>
+                    <td width="20"></td>
+                    <td>密码：</td>
+                    <td>
+                        <input id="password" class="easyui-textbox" type="password" name="password" data-options="required:true,validType:'length[1,40]'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>上传头像：</td>
+                    <td>
+                        <input data-options='buttonText:"选择",prompt:"选择文件"' id="file1" name="file1" class="easyui-filebox" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                    </td>
+                    <td></td>
+                    <td>婚否：</td>
+                    <td>
+                       <select name="married" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="0">未婚</option>
+                            <option value="1">已婚</option>
+                            <option value="2">保密</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                 	<td>性别：</td>
+                    <td>
+                       <select name="sex" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="0">女</option>
+                            <option value="1">男</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td>出生日期：</td>
+                    <td>
+                    	<input class="easyui-datebox" type="text" name="birthday" data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                 	<td>身高：</td>
+                    <td>
+                       	<select name="height" style="width: 100px" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'">
+							<option value="140-150">140-150</option>
+							<option value="150-160">150-160</option>
+							<option value="160-170">160-170</option>
+							<option value="170-180">170-180</option>
+							<option value="180-190">180-190</option>
+							<option value="190-200">190-200</option>
+						</select>
+                    </td>
+                    <td></td>
+                    <td>地址：</td>
+                    <td>
+                    	<input class="easyui-textbox" type="text" name="address" data-options="required:true,validType:'length[1,40]'" />
+                    </td>
+                </tr>
+                <tr>
+                 	<td>爱好：</td>
+                    <td>
+                       	<input class="easyui-textbox" type="text" name="hobby" data-options="required:true,validType:'length[1,40]'" />
+                    </td>
+                    <td></td>
+                    <td>职业：</td>
+                    <td>
+                    	<select name="occupation" style="width: 100px" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'">
+							<option value="">保密</option>
+					 		<option value="工人">工人</option>
+		                    <option value="会计">会计</option>
+		                    <option value="IT">IT</option>
+		                    <option value="医生">医生</option>
+		                    <option value="护士">护士</option>
+		                    <option value="服务员">服务员</option>
+		                    <option value="公务员">公务员</option>
+		                    <option value="教师">教师</option>
+		                    <option value="自由职业">自由职业</option>
+						</select>
+                    </td>
+                </tr>
+                <tr>
+                 	<td>手机号：</td>
+                    <td>
+                       	<input id="phone" class="easyui-textbox" type="text" name="phone" data-options="required:true,validType:'length[1,20]'" />
+                    </td>
+                    <td></td>
+                    <td>学历：</td>
+                    <td>
+                    	<select name="record" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="小学">小学</option>
+                            <option value="初中">初中</option>
+                            <option value="高中">高中</option>
+                            <option value="大专">大专</option>
+                            <option value="本科">本科</option>
+                            <option value="研究生">研究生</option>
+                            <option value="硕士">硕士</option>
+                            <option value="博士">博士</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户类型：</td>
+                    <td>
+                        <select name="usertype" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="0">普通</option>
+                            <option value="1">会员</option>
+                            <option value="2">管理员</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td>附加职能：</td>
+                    <td>
+                        <select name="otherfunction" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="0">无</option>
+                            <option value="1">红娘</option>
+                        </select>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>血型：</td>
+                    <td>
+                        <select name="bloodtype" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="O">O</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="AB">AB</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td>薪资：</td>
+                    <td>
+                         <select name="wage" style="width: 100px" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width:80px">
+                            <option value="0-3000">0-3000</option>
+                            <option value="3000-5000">3000-5000</option>
+                            <option value="5000-8000">5000-8000</option>
+                            <option value="8000-10000">8000-10000</option>
+                            <option value="10000-20000">10000-20000</option>
+                            <option value="20000+">20000+</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                	<td>用户签名：</td>
+                	<td>
+                		<input class="easyui-textbox" type="text" name="signcontent" data-options="validType:'length[1,200]'" />
+                	</td>
+                	<td></td>
+                	<td>排序号：</td>
+                    <td>
+                        <input class="easyui-numberbox" type="number" name="usersortindex" data-options="required:true,validType:'length[1,40]'" /> <span class="font-red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                	<td>金币：</td>
+                	<td>
+                		<input class="easyui-numberbox" type="number" min="0" type="text" name="goldbalance" data-options="required:true,validType:'length[1,200]'" />
+                	</td>
+                </tr>
+                <tr>
+                	<td>备注：</td>
+                	<td>
+                		<input style="width: 145px;height: 60px;" class="easyui-textbox" type="text" name="remark" data-options="validType:'length[1,100]',multiline:true" />
+                		<span class="font-red">*</span>
+                	</td>
+                </tr>
+            </table>
+            <p class="font-grey">tips:<span class="font-red">*</span> 代表该属性在前台是隐藏的</p>
+        </form>
+        </div>
+    </div>
+    <div id="bb">
+        <button type="button" onclick="Save()" data-options='iconCls:"icon-ok"' class="easyui-linkbutton">
+		保存
+        </button>
+        <a onclick="$('#AddDialog').dialog('close')" data-options='iconCls:"icon-cancel"' class="easyui-linkbutton">
+		关闭
+        </a>
+    </div>
+    
+    <!-- 图片弹窗 -->
+    <div id="ImgDialog" class="easyui-dialog" style="width:520px;height:560px"
+         data-options="title:'修改图像视频信息',modal:true,closed:true">
+        <div style="padding:5px">
+        <form id="ff-img" action="" method="post" enctype="multipart/form-data" >
+        	<input id="ff-img-userid" type="hidden" name="userid">
+        	<div>
+        		<h4 style="margin: 5px">图片信息</h4>
+        		<div class="upload-img-board">
+        			
+        		</div>
+        		<button type="button" onclick="ImgAdd()" data-options='iconCls:"icon-add"' class="easyui-linkbutton">上传图片</button>
+        		<button type="button" onclick="ImgDel()" data-options='iconCls:"icon-remove"' class="easyui-linkbutton">删除选中</button>
+        	</div>
+        	<div>
+        		<h4 style="margin: 5px">视频信息</h4>
+        		<div>
+        			<video id="videourl" style="border:1px solid #888" width="350" height="210"  controls="controls" x-webkit-airplay="allow" 
+        			src="">
+        			
+        			</video>
+        			<span id="videotip" style="padding:5px;color:#888">暂无视频信息</span>
+        		</div>
+        		<button onclick="VideoUploadClick()" type="button" data-options='iconCls:"icon-add"' class="easyui-linkbutton">上传视频</button>
+        		<span id="uptip" style="color:#888" hidden="true" >上传中。。。请勿关闭。。</span>
+        	</div>
+        </form>
+        </div>
+     </div>
+     
+     <!-- 收入弹窗 -->
+     <div id="IncomeDialog" class="easyui-dialog" style="width:300px;height:200px"
+         data-options="title:'查看收入信息',modal:true,closed:true">
+        <div style="padding:5px;text-align: center;">
+        	<br/>
+        	<label>总收入：<span id="income">0</span>金币</label>
+        	<br/><br/>
+        	<button onclick="ClearUserIncome()" class="easyui-linkbutton">收入兑现</button>
+        </div>
+     </div>
+    
+     <!-- 添加菜单 -->
+    <div id="mm" class="easyui-menu" style="width:150px;">
+        <div id="mm-base" onclick="EditClick()">编辑基本信息</div>
+        <div id="mm-imgand" onclick="ImgEditClick()" >编辑图片视频</div>
+    </div>
+
+	<input type="file" name="file1" accept="image/gif,image/jpeg,image/jpg,image/png" id="file1" style="display:none;" onchange="ImgUpload()" />
+	<input type="file" name="file2" accept="video/*" id="file2" style="display:none;" onchange="VideoUpload(this)" />
+
+    <script type="text/javascript">
+    	var sysconfig=null;
+    	 
+        $(function () {
+            loadSysConfig();
+        	$.ajaxSetup({async : false });
+            LoadSelAddress();
+            LoadData();
+            $.ajaxSetup({async : true });
+        });
+
+        $('#ff').form({
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            onLoadSuccess:function(data){
+            	$('#headimgurl').attr('src','');
+            	if(data.headimgurl!=null&&data.headimgurl!='')
+            		$('#headimgurl').attr('src',data.headimgurl);
+            	$('#AddDialog').dialog('open');
+            },
+            success: function (data) {
+                $('#AddDialog').dialog('close')
+                $.messager.alert('提示', data, 'info');
+                $('#tt').datagrid('reload');
+            }
+        });
+        
+       function ImgClick(obj){
+        	if($(obj).hasClass('active')){
+        		$(obj).removeClass('active');
+        	}else{
+        		$(obj).addClass('active');
+        	}
+        }
+
+        function Save() {
+            if ($('#userid').val() == null || $('#userid').val()==""||$('#userid').val()<1) {
+                $('#password').textbox('setValue'
+                		,hex_md5($('#password').val()).toUpperCase())
+            	$('#ff').attr("action", '/YuJianRoom/Users/Add');
+            }
+            else {
+                $('#ff').attr("action", '/YuJianRoom/Users/Update');
+            }
+            $('#ff').submit();
+        }
+        
+        function LoadSelAddress(){
+        	$('#sel-address').combobox({url:'/YuJianRoom/Users/GetUserAddress'
+        		,method:"get"});
+        }
+
+        function LoadData() {
+            var pager;
+            pager = $('#tt').datagrid({ url: '/YuJianRoom/Users/GetList?address='+$('#sel-address').combobox('getValue')
+            		+'&height='+$('#sel-height').val()
+            		+'&sex='+$('#sel-sex').val()
+            		+'&usertype='+$('#sel-usertype').val()
+            		+'&record='+$('#sel-record').val()
+            		+'&condition='+ $('#condition').val()}).datagrid('getPager');
+          
+            pager.pagination({
+                showPageList: true,
+                buttons: [{
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        AddClick();	//添加-处理
+                    }
+                }, {
+                    iconCls: 'icon-edit',
+                    handler: function (e) {
+                    	 //显示菜单
+                        $('#mm').menu('show', {
+                            left: e.pageX,
+                            top: e.pageY
+                        });
+                        return false;
+                    }
+                }, {
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                    	DelClick();//删除-处理  
+                    }
+                },{
+                    text:'查看收入',
+                    handler: function () {
+                    	UserIncome();
+                    }
+                }],
+                onBeforeRefresh: function () {
+                    return true;
+                }
+            });
+        }
+        
+        function AddClick(){
+        	$('#headimg-bar').hide();
+            $('#phone').textbox({readonly:false});
+            $('#password').textbox({readonly:false});
+        	$('#ff').form('clear');
+            $('#ff').form('load', {
+            	usertype: 2,
+                sex: 1,
+                userid:0,
+                hotcount:0,
+                riches:0,
+                goldbalance:0,
+                otherfunction:0,
+                matchmakertype:0,
+                height:"150-160",
+                createtime:"2017-01-01 01:01:01"
+            });
+            $('#AddDialog').dialog('open');
+        }
+        
+        function EditClick(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '请选中一个选项', 'info');
+                 return;
+             }
+
+             //加载数据
+             $('#headimg-bar').show();
+             $('#ff').form('clear');
+             $('#phone').textbox({readonly:true});
+             $('#password').textbox({readonly:true});
+             $('#ff').form('load', '/YuJianRoom/Users/GetSingle?id=' + rows[0].userid);
+        }
+        
+        //查看用户收入
+        function UserIncome(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '请选中一个选项', 'info');
+                 return;
+             }
+        	$.post('/YuJianRoom/UserGifts/GetUserIncome'
+        			,{userid:rows[0].userid}
+        			,function(data){
+        				$('#income').html(data);
+        	        	$('#IncomeDialog').dialog('open');
+        			},'json');
+        }
+       	
+        //清除收入
+        function ClearUserIncome(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '错误！', 'info');
+                 return;
+             }
+             if($('#income').html()==0){
+            	 $.messager.alert('提示', '无可兑换收入', 'info');
+            	 return;
+             }
+             
+        	 $.messager.confirm('提示','是否确定清除，该用户目前为止的收入信息?'
+        			 ,function(f){
+        		 if(f){
+        			 $.post('/YuJianRoom/UserGifts/DelUserIncome'
+        					,{userid:rows[0].userid}
+        			 		,function(data){
+        			 			$.messager.alert('提示',data.msg);
+        			 			if(data.status!=1){
+        			 				return;
+        			 			}
+        			 			$('#income').html(0);
+        			 		},'json');
+        		 }
+        	 });
+        }
+        
+        //图片add
+        function ImgAdd(){
+        	 if($('.upload-img-board img').length>=sysconfig.photocount){
+        		 $.messager.alert("提示","最多可以上传"+sysconfig.photocount+"张照片");
+        		 return;
+        	 }
+        	 $('#file1').click();
+        }
+        
+        //图片del
+        function ImgDel(){
+        	var ids="";
+        	var elems=[]
+        	$('.upload-img-board img').each(function(){
+        		if($(this).hasClass('active')){
+        			ids+= $(this).attr("data-id")+","
+        			elems.push($(this));
+        		}
+        	})
+        	if(ids==''||ids==null)
+        		return;
+        	ids=ids.substring(0,ids.length-1);
+        	
+        	$.messager.confirm("提示","是否确认删除选中项？"
+        			,function(f){
+        		if(f){
+        			$.post("/YuJianRoom/UserImgs/Del"
+        					,{ids:ids}
+        			,function(data){
+        				$.messager.alert('提示',data);
+        				if(data=='删除成功'){
+        					//移除
+        					for(var i=0;i<elems.length;i++){
+        						elems[i].remove();
+        					}
+        				}
+        			},'text')
+        		}
+        	})
+        }
+        
+        //上传图片
+        function ImgUpload(){
+        	var id = $('#ff-img-userid').val();
+        	if(id==null||id==''||id<1){
+        		 $.messager.alert("提示","上传失败");
+        		return;
+        	}
+    		$.ajaxFileUpload({
+    			url: '/YuJianRoom/UserImgs/Add?userid='+id,
+                type: 'post',
+                secureuri: false,
+                fileElementId: "file1",
+                dataType: 'json',
+                success: function (data){  //服务器成功响应处理函数  
+					if(data.status==1){
+						$('.upload-img-board').append('<img onclick="ImgClick(this)" data-id="'+data.jsonData.userimgid+'" src="'+data.jsonData.userimgurl+'" />');
+					}
+					$.messager.alert("提示",data.msg);
+                },
+                error: function (data, status, e){//服务器响应失败处理函数
+                	if(data.status==1){
+						$('.upload-img-board').append('<img onclick="ImgClick(this)" data-id="'+data.jsonData.userimgid+'" src="'+data.jsonData.userimgurl+'" />');
+					}
+					$.messager.alert("提示",data.msg);
+                }
+    		});
+    	}
+        
+        //点击上传视频
+        function VideoUploadClick(){
+        	if($('#uptip').is(":hidden")){
+        		$('#file2').click();
+        	}
+        }
+        
+        //上传视频
+        function VideoUpload(obj){
+        	if(obj.files==null||obj.files.length<1)
+        		return;
+        	$('#uptip').show();
+        	var id = $('#ff-img-userid').val();
+        	if(id==null||id==''||id<1){
+        		 $.messager.alert("提示","上传失败");
+        		return;
+        	}
+        	var m=obj.files[0].size/(1024*1024);
+         	if(m>30){
+         		$.messager.alert("提示","上传的文件大小不能大于30M");
+         		return;
+         	}
+         	
+         	$.ajaxFileUpload({
+    			url: '/YuJianRoom/Users/UpdateVideo?userid='+id,
+                type: 'post',
+                secureuri: false,
+                fileElementId: "file2",
+                dataType: 'json',
+                success: function (data){  //服务器成功响应处理函数  
+					if(data.status==1){
+						$('#videourl').attr("src",data.jsonData);
+						$('#videourl').show();
+						$('#videotip').hide();
+					}
+					$('#uptip').hide();
+					$.messager.alert("提示",data.msg);
+                },
+                error: function (data, status, e){//服务器响应失败处理函数
+                	if(data.status==1){
+						$('.upload-img-board').append('<img onclick="ImgClick(this)" data-id="'+data.jsonData.userimgid+'" src="'+data.jsonData.userimgurl+'" />');
+					}
+					$.messager.alert("提示",data.msg);
+                }
+    		});
+        }
+        
+        //图片按钮点击编辑
+        function ImgEditClick(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '请选中一个选项', 'info');
+                 return;
+             }
+             if(rows[0].usertype==2){
+            	 $.messager.alert('提示', '管理员用户无该类信息', 'info');
+                 return;
+             }
+             
+             $("#ff-img").form("clear");
+             $("#ff-img").form("load",{userid:rows[0].userid})
+             
+             //加载视频
+             if(rows[0].videourl==''||rows[0].videourl==''){
+            	 $('#videourl').hide();
+            	 $('#videotip').show();
+             }else{
+            	 $('#videourl').attr("src",rows[0].videourl);
+            	 $('#videourl').show();
+            	 $('#videotip').hide();
+             }
+             //加载图片
+             $.post("/YuJianRoom/UserImgs/GetList?userid="+rows[0].userid
+            		 ,function(data){
+            	 var html='';
+            	 for(var i=0;i<data.length;i++){
+            		 html+='<img onclick="ImgClick(this)" data-id="'+data[i].userimgid+'" src="'+data[i].userimgurl+'" />'
+            	 }
+            	 $('.upload-img-board').html(html);
+                 $('#ImgDialog').dialog('open');
+             },'json')
+        }
+        
+        function DelClick(){
+        	var rows = $('#tt').datagrid('getSelections');
+            if (rows.length < 1) {
+                $.messager.alert('提示', '请至少选中一个选项', 'info');
+                return;
+            }
+            var ids = '';
+            for (var i = 0; i < rows.length; i++) {
+                ids += rows[i].userid + ","
+            }
+            ids = ids.substring(0, ids.length - 1);
+
+            $.messager.confirm('系统提示', '您确定要删除编号为' + ids + '的数据吗?', function (r) {
+                if (r) {
+                    $.post('/YuJianRoom/Users/Del'
+                        , { ids: ids }
+                        , function (data) {
+                            $.messager.alert('提示', data, 'info');
+                            $('#tt').datagrid('reload');
+                        }, 'text');
+                }
+            });
+        }
+        
+        function loadSysConfig(){
+        	$.get('/YuJianRoom/SysConfigs/GetSingle'
+        			,function(data){
+        				if(data==null){
+        					sysconfig={photocount:8}
+        				}
+        				sysconfig=data;
+        	},'json')
+        }
+        
+        function FormatImg(val,row){
+        	if(val==null||val=='')
+        		return '';
+        	return '<img src="'+val+'" style="width:50px;height:50px" />';
+        }
+        function FormatMarried(val,row){
+        	if(val==0){
+        		return '未婚';
+        	}
+        	if(val==1){
+        		return '已婚';
+        	}
+        	if(val==2){
+        		return "保密";
+        	}
+        }
+        function FormatSex(val,row){
+        	return val==0?"女":"男";
+        }
+        function FormatType(val,row){
+        	if(val==-1){
+        		return '<span class="font-red">红人</span>';
+        	}
+        	if(val==0){
+        		return '普通';
+        	}
+        	if(val==1){
+        		return '<span class="font-orange">VIP</span>';
+        	}
+        	if(val==2){
+        		return '<span class="font-purple">管理员</span>';
+        	}
+        }
+    </script>
+    <script src="/YuJianRoom/Contents/js/ajaxFileUpload.js?a=1.5"></script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/YuJianRoom/Contents/js/md5.js"></script>
+</body>
+</html>

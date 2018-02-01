@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>首页轮播图</title>
+	<script src="/YuJianRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/jquery.easyui.min.js" type="text/javascript"></script>
+    <link href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/default/easyui.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/icon.css" />
+</head>
+<body>
+    <table id="tt" title="首页轮播图列表" style="width:100%;height:100%"
+           data-options='url:"/YuJianRoom/Banners/GetList"
+           ,fit:"true"
+           ,toolbar:"#tb"
+           ,fitColumns:"true"
+		   ,rownumbers:"true"
+           ,pagination:"true"'>
+        <thead>
+            <tr>
+                <th data-options="field:'bannerid',width:100,align:'center'">编号</th>
+                <th data-options="field:'bannerimgurl',width:100,align:'center',formatter:FormatImg">广告图片</th>
+                <th data-options="field:'address',width:100,align:'center'">地区</th>
+                <th data-options="field:'bannerlink',width:100,align:'center'">链接</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb" style="padding:5px;height:auto">
+        <div>
+			地区：
+			<select id="sel-address" name="address" class="easyui-combobox" style="width: 120px" 
+			data-options="editable:false
+			,panelHeight:'auto'
+			,textField:'text'
+			,valueField:'id'"></select>
+            <button onclick="LoadData()" type="button" class="easyui-linkbutton" data-options='iconCls:"icon-search"'>确定</button>
+        </div>
+    </div>
+
+    <!-- 弹窗部分 -->
+    <div id="AddDialog" class="easyui-dialog" style="width:340px;height:250px"
+         data-options="title:'添加/修改轮播图',buttons:'#bb',modal:true,closed:true">
+        <div style="padding:10px;">
+        <form id="ff" action="" method="post" enctype="multipart/form-data">
+            <input id="id" type="hidden" name="bannerid" />
+            <input type="hidden" name="bannerimgurl"/>
+            <input type="hidden" name="bannertype" value="0" />
+            <input id="address" name="address" value="" type="hidden" />  
+            <table>
+                <tr>
+                    <td>上传轮播图：</td>
+                    <td>
+                        <input data-options='buttonText:"选择",prompt:"选择文件"' id="file1" name="file1" class="easyui-filebox" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>跳转链接：</td>
+                    <td>
+                        <input class="easyui-textbox" type="text" name="bannerlink" data-options="required:true,validType:['url','length[0,150]']" />
+                    </td>
+                </tr>
+                 <tr>
+					<td>地址：</td>
+					<td>
+						<select id="province" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'200px'" style="width:100px">
+                        </select>省
+                        <select id="city" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:100px">
+                        </select>市
+					</td>      
+                </tr>
+            </table>
+            <p class="font-grey">tips：地址如果不选，默认为全国</p>
+        </form>
+        </div>
+    </div>
+    <div id="bb">
+        <button type="button" onclick="Save()" data-options='iconCls:"icon-ok"' class="easyui-linkbutton">
+		保存
+        </button>
+        <a onclick="$('#AddDialog').dialog('close')" data-options='iconCls:"icon-cancel"' class="easyui-linkbutton">
+		关闭
+        </a>
+    </div>
+
+
+    <script type="text/javascript">
+    	var bannertype=0;
+        $(function () {
+        	$.ajaxSetup({async : false });
+            LoadSelAddress();
+            LoadData();
+            $.ajaxSetup({async : true });
+        });
+
+        $('#ff').form({
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            onLoadSuccess:function(data){
+            	$.ajaxSetup({async : false });
+            	LoadProvince();
+            	if(data.address!=null&&data.address!=''){
+            		var strs = data.address.split(' ');
+            		var id = getProvinceId(strs[0]);
+            		$('#province').combobox('select',id);
+            		$('#city').combobox('select',getCityId(id,strs[1]));
+            	}
+            	$.ajaxSetup({async : true });
+            	$('#AddDialog').dialog('open');
+            },
+            success: function (data) {
+                $('#AddDialog').dialog('close')
+                $.messager.alert('提示', data, 'info');
+
+                
+                $.ajaxSetup({async : false });
+        		LoadSelAddress();
+        		$.ajaxSetup({async : true});
+                $('#tt').datagrid('reload');
+            }
+        });
+
+        function Save() {
+            if ($('#id').val() == null || $('#id').val()=="" ||$('#id').val()<1) {
+                $('#ff').attr("action", '/YuJianRoom/Banners/Add');
+            }
+            else {
+                $('#ff').attr("action", '/YuJianRoom/Banners/Update');
+            }
+            $('#ff').submit();
+        }
+        
+        function LoadSelAddress(){
+        	$('#sel-address').combobox({url:'/YuJianRoom/Banners/GetAddress'
+        		,method:"post"});
+        }
+        
+        function LoadData() {
+            var pager= $('#tt').datagrid({ 
+            	url: '/YuJianRoom/Banners/GetList?bannertype='+bannertype
+            			+'&address='+$('#sel-address').combobox('getValue')
+                }).datagrid('getPager');
+            
+            pager.pagination({
+                showPageList: true,
+                buttons: [{
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        AddClick();	//添加-处理
+                    }
+                }, {
+                    iconCls: 'icon-edit',
+                    handler: function (e) {
+                    	EditClick();
+                    }
+                }, {
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                    	DelClick();//删除-处理  
+                    }
+                }],
+                onBeforeRefresh: function () {
+                    return true;
+                }
+            });
+        }
+        
+        $('#province').combobox({
+        	valueField:"id",
+        	textField:"text",
+        	onLoadSuccess : function(){
+        		var val = $(this).combobox('getData');
+       			$(this).combobox('setValue', val[0].id);
+            },
+            onChange:function(){
+	        	LoadCity($(this).combobox('getValue'))
+			}
+        })
+        $('#city').combobox({
+        	valueField:"id",
+        	textField:"text",
+        	onLoadSuccess : function(){
+        		var val = $(this).combobox('getData');
+       			$(this).combobox('setValue', val[0].id);
+            },
+            onChange:function(){
+            	if($('#province').combobox('getValue')!='-1')
+					$('#address').val($('#province').combobox('getText')+' '+$(this).combobox('getText'));
+            	else
+            		$('#address').val('');
+			}
+        })
+        function LoadProvince(){
+        	var arrs=[];
+        	arrs.push({id:"-1",text:"--请选择--"});
+        	for(var i=0;i<LAreaData.length;i++){
+        		arrs.push({ id:parseInt(LAreaData[i].id),text:LAreaData[i].name });
+        	}
+        	
+        	$('#province').combobox('loadData',arrs);
+        }
+        function LoadCity(id){
+        	var arrs=[];
+        	if(id=='-1'){
+        		arrs.push({id:"-1",text:"--请选择--"});
+        		$('#city').combobox('loadData',arrs);
+    			return;
+        	}
+        	
+        	for(var i=0;i<LAreaData.length;i++){
+        		if(LAreaData[i].id==id){
+        			for(var j=0;j<LAreaData[i].child.length;j++){
+                		arrs.push({ id:parseInt(LAreaData[i].child[j].id),text:LAreaData[i].child[j].name });
+        			}
+        			$('#city').combobox('loadData',arrs);
+        			return;
+        		}
+        	}
+        }
+        
+        function AddClick(){
+        	$('#ff').form('clear');
+        	$('#ff').form('load',{bannerid:0,bannertype:0});
+            $('#AddDialog').dialog('open');
+        }
+        
+        function EditClick(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '请选中一个选项', 'info');
+                 return;
+             }
+
+             //加载数据
+             $('#ff').form('clear');
+             $('#ff').form('load', '/YuJianRoom/Banners/GetSingle?id=' + rows[0].bannerid);
+        }
+        
+        function DelClick(){
+        	var rows = $('#tt').datagrid('getSelections');
+            if (rows.length < 1) {
+                $.messager.alert('提示', '请至少选中一个选项', 'info');
+                return;
+            }
+            var ids = '';
+            for (var i = 0; i < rows.length; i++) {
+                ids += rows[i].bannerid + ","
+            }
+            ids = ids.substring(0, ids.length - 1);
+
+            $.messager.confirm('系统提示', '您确定要删除编号为' + ids + '的数据吗?', function (r) {
+                if (r) {
+                    $.post('/YuJianRoom/Banners/Del'
+                        , { ids: ids }
+                        , function (data) {
+                            $.messager.alert('提示', data, 'info');
+                            $('#tt').datagrid('reload');
+                        }, 'text');
+                }
+            });
+        }
+        
+        function getProvinceId(text){
+        	for(var i=0;i<LAreaData.length;i++){
+        		if(LAreaData[i].name==text){
+        			return LAreaData[i].id;
+        		}
+        	}
+        }
+        
+        function getCityId(parentId,text){
+        	for(var i=0;i<LAreaData.length;i++){
+        		if(LAreaData[i].id==parentId){
+        			for(var j=0;j<LAreaData[i].child.length;j++){
+                		if(LAreaData[i].child[j].name==text){
+                			return LAreaData[i].child[j].id;
+                		}
+        			}
+        		}
+        	}
+        }
+        
+        function FormatImg(val,row){
+        	if(val==null||val=='')
+        		return '';
+        	return '<img src="'+val+'"width="100" height="60" />';
+        }
+    </script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>表情包轮播图</title>
+	<script src="/YuJianRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/jquery.easyui.min.js" type="text/javascript"></script>
+    <link href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/default/easyui.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/icon.css" />
+</head>
+<body>
+    <table id="tt" title="表情包轮播图列表" style="width:100%;height:100%"
+           data-options='url:"/YuJianRoom/Banners/GetList"
+           ,fit:"true"
+           ,fitColumns:"true"
+		   ,rownumbers:"true"
+           ,pagination:"true"'>
+        <thead>
+            <tr>
+                <th data-options="field:'bannerid',width:100,align:'center'">编号</th>
+                <th data-options="field:'bannerimgurl',width:100,align:'center',formatter:FormatImg">广告图片</th>
+                <th data-options="field:'bannerlink',width:100,align:'center'">链接</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- 弹窗部分 -->
+    <div id="AddDialog" class="easyui-dialog" style="width:250px;height:180px"
+         data-options="title:'添加/修改轮播图',buttons:'#bb',modal:true,closed:true">
+        <div style="padding:5px;">
+        <form id="ff" action="" method="post" enctype="multipart/form-data">
+            <input id="id" type="hidden" name="bannerid" value="0" />
+            <input type="hidden" name="bannerimgurl"/>
+            <input type="hidden" name="address"/>
+            <input type="hidden" name="bannertype" value="1" />
+            <table>
+                <tr>
+                    <td>上传轮播图：</td>
+                    <td>
+                        <input data-options='buttonText:"选择",prompt:"选择文件"' id="file1" name="file1" class="easyui-filebox" accept="image/gif,image/jpeg,image/jpg,image/png" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>跳转链接：</td>
+                    <td>
+                        <input class="easyui-textbox" type="text" name="bannerlink" data-options="required:true,validType:['url','length[0,150]']" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        </div>
+    </div>
+    <div id="bb">
+        <button type="button" onclick="Save()" data-options='iconCls:"icon-ok"' class="easyui-linkbutton">
+		保存
+        </button>
+        <a onclick="$('#AddDialog').dialog('close')" data-options='iconCls:"icon-cancel"' class="easyui-linkbutton">
+		关闭
+        </a>
+    </div>
+
+
+    <script type="text/javascript">
+    	var bannertype=1;
+        $(function () {
+            LoadData()
+        });
+
+        $('#ff').form({
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            onLoadSuccess:function(){
+            	$('#AddDialog').dialog('open');
+            },
+            success: function (data) {
+                $('#AddDialog').dialog('close')
+                $.messager.alert('提示', data, 'info');
+
+                $('#tt').datagrid('reload');
+            }
+        });
+
+        function Save() {
+            if ($('#id').val() == null || $('#id').val()=="" ||$('#id').val()<1) {
+                $('#ff').attr("action", '/YuJianRoom/Banners/Add');
+            }
+            else {
+                $('#ff').attr("action", '/YuJianRoom/Banners/Update');
+            }
+            $('#ff').submit();
+        }
+
+        function LoadData() {
+            var pager= $('#tt').datagrid({ 
+            	url: '/YuJianRoom/Banners/GetList?bannertype='+bannertype
+                }).datagrid('getPager');
+            
+            pager.pagination({
+                showPageList: true,
+                buttons: [{
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        AddClick();	//添加-处理
+                    }
+                }, {
+                    iconCls: 'icon-edit',
+                    handler: function (e) {
+                    	EditClick();
+                    }
+                }, {
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                    	DelClick();//删除-处理  
+                    }
+                }],
+                onBeforeRefresh: function () {
+                    return true;
+                }
+            });
+        }
+        
+        function AddClick(){
+        	$('#ff').form('clear');
+        	$('#ff').form('load',{bannerid:0,bannertype:1});
+            $('#AddDialog').dialog('open');
+        }
+        
+        function EditClick(){
+        	 var rows = $('#tt').datagrid('getSelections');
+             if (rows.length != 1) {
+                 $.messager.alert('提示', '请选中一个选项', 'info');
+                 return;
+             }
+
+             //加载数据
+             $('#ff').form('clear');
+             $('#ff').form('load', '/YuJianRoom/Banners/GetSingle?id=' + rows[0].bannerid);
+        }
+        
+        function DelClick(){
+        	var rows = $('#tt').datagrid('getSelections');
+            if (rows.length < 1) {
+                $.messager.alert('提示', '请至少选中一个选项', 'info');
+                return;
+            }
+            var ids = '';
+            for (var i = 0; i < rows.length; i++) {
+                ids += rows[i].bannerid + ","
+            }
+            ids = ids.substring(0, ids.length - 1);
+
+            $.messager.confirm('系统提示', '您确定要删除编号为' + ids + '的数据吗?', function (r) {
+                if (r) {
+                    $.post('/YuJianRoom/Banners/Del'
+                        , { ids: ids }
+                        , function (data) {
+                            $.messager.alert('提示', data, 'info');
+                            $('#tt').datagrid('reload');
+                        }, 'text');
+                }
+            });
+        }
+        
+        function FormatImg(val,row){
+        	if(val==null||val=='')
+        		return '';
+        	return '<img src="'+val+'"width="100" height="60" />';
+        }
+    </script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+</body>
+</html>

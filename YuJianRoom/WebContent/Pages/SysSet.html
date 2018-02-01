@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>系统设置</title>
+	<script src="/YuJianRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/jquery.easyui.min.js" type="text/javascript"></script>
+    <link href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/default/easyui.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/themes/icon.css" />
+</head>
+<body>
+    <div data-options="fit:true" class="easyui-panel" title="系统设置" style="padding:20px;">
+		<div>
+			<form id="ff" action="/YuJianRoom/SysConfigs/Update" method="post">
+				<input type="hidden" name="sysconfigid" />
+				<input type="hidden" name="userbgurl" />
+				<h4>系统参数设置</h4>
+				<table>
+					<tr>
+						<td>成为VIP赠送金币：</td>
+						<td><input style="width: 170px;" name="sendgold" class="easyui-numberbox" min="0" max="99999" data-options="required:true" />(tips:用户成为vip后赠送的金币数量)</td>
+					</tr>
+					<tr>
+						<td>折扣：</td>
+						<td><input style="width: 170px;" name="vipdiscount" class="easyui-numberbox" min="0.1" max="1" data-options="required:true,precision:1" /></td>
+					</tr>
+					<tr>
+						<td>用户照片数：</td>
+						<td><input style="width: 170px;" name="photocount" class="easyui-numberbox" min="1" max="20" data-options="required:true" /></td>
+					</tr>
+					<tr>
+						<td>广告间隔(每12个)：</td>
+						<td><input style="width: 170px;" name="intervalnum" class="easyui-numberbox" min="1" max="10" data-options="required:true" />(tips:推荐3的倍数)</td>
+					</tr>
+					<tr>
+						<td>分享返回路径：</td>
+						<td><input style="width: 170px;" name="sharebackurl" type="url" class="easyui-textbox" data-options="required:true,validType:['url','length[1,100]']" /></td>
+					</tr>
+				</table>
+				<button class="easyui-linkbutton" type="submit" data-options="iconCls:'icon-ok'" >保存</button>
+			</form>
+		</div>
+		<br/>
+		
+		<div>
+			<form id="ff-userbackgroud" action="/YuJianRoom/SysConfigs/UpdateUserBgUrl" method="post" enctype="multipartform-data">
+				<h4>用户头像背景</h4>
+				<div><img  id="userbgurl" src="" width="150px" style="display:none" /></div>
+				<div><input data-options='buttonText:"选择",prompt:"选择背景"' style="width:150px" id="file" name="file" class="easyui-filebox" accept="image/gif,image/jpeg,image/jpg,image/png" /></div>
+				<button id="btn-saveheadurl" class="easyui-linkbutton" type="button" data-options="iconCls:'icon-ok'" >保存</button>
+			</form>
+		</div>
+		
+		<br/>
+		<div>
+			<form id="ff-tipmap" action="/YuJian/Config/UpdateTipMap" method="post">
+				<input type="hidden" name="sysconfigid" />
+				<h4>用户提示设置</h4>
+				<table>
+					<tr>
+						<td>提交反馈回复(成功)：</td>
+						<td><input style="width: 170px;" name="feedbacksuccess" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>提交反馈回复(失败)：</td>
+						<td><input style="width: 170px;" name="feedbackfail" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>充值回复(成功)：</td>
+						<td><input style="width: 170px;" name="paysuccess" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>充值回复(失败)：</td>
+						<td><input style="width: 170px;" name="payfail" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>表情购买回复(成功)：</td>
+						<td><input style="width: 170px;" name="buyexpresssuccess" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>表情购买回复(金币不足)：</td>
+						<td><input style="width: 170px;" name="buyexpressless" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>表情购买回复(失败)：</td>
+						<td><input style="width: 170px;" name="buyexpressfail" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>礼物购买回复(成功)：</td>
+						<td><input style="width: 170px;" name="buygiftsuccess" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>礼物购买回复(金币不足)：</td>
+						<td><input style="width: 170px;" name="buygiftless" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>礼物购买回复(失败)：</td>
+						<td><input style="width: 170px;" name="buygiftfail" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>修改红人回复(成功)：</td>
+						<td><input style="width: 170px;" name="modifyredsuccess" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>修改红人回复(失败)：</td>
+						<td><input style="width: 170px;" name="modifyredfail" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>求撮合提示：</td>
+						<td><input style="width: 170px;" name="makematch" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>求脱单提示：</td>
+						<td><input style="width: 170px;" name="outsingle" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+					<tr>
+						<td>成为VIP提示(首页)：</td>
+						<td><input style="width: 170px;" name="indexviptip" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>成为VIP提示(照片)：</td>
+						<td><input style="width: 170px;" name="imgviptip" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+						<td width="10"></td>
+						<td>成为VIP提示(视频)：</td>
+						<td><input style="width: 170px;" name="videoviptip" class="easyui-textbox" data-options="required:true,validType:'length[1,40]'" /></td>
+					</tr>
+				</table>
+				<button class="easyui-linkbutton" type="submit" data-options="iconCls:'icon-ok'" >保存</button>
+			</form>
+		</div>
+	</div>
+
+
+    <script type="text/javascript">
+        $(function () {
+        	$('#ff').form('load','/YuJianRoom/SysConfigs/GetSingle');
+        	$('#ff-tipmap').form('load','/YuJian/Config/GetTipMap')
+        });
+
+		$('#btn-saveheadurl').click(function(){
+			var formData = new FormData($("#ff-userbackgroud")[0]);
+			//提交
+			$.ajax({
+	            type:'POST',
+	            url:"/YuJianRoom/SysConfigs/UpdateUserBgUrl",
+	            data:formData,
+	            dataType:'json',
+	            processData:false,
+	            contentType: false,
+	            success:function(data){
+					$.messager.alert('提示', data.msg, 'info');
+	            	if(data.status==1){
+						$('#userbgurl').show();
+						$('#userbgurl').attr('src',data.jsonData);
+						return;
+					}
+	            }
+	        });
+		});
+
+        $('#ff').form({
+			onLoadSuccess:function(data){
+				if(data.userbgurl==''||data.userbgurl==null)
+					return;
+				$('#userbgurl').attr("src",data.userbgurl);
+				$('#userbgurl').show();
+			},
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'info');
+            }
+        });
+        
+        $('#ff-tipmap').form({
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'info');
+            }
+        });
+    </script>
+    <script src="/YuJianRoom/Contents/lib/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+</body>
+</html>
