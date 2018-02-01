@@ -79,8 +79,13 @@
         function LoadData() {
             var pager= $('#tt').datagrid({ 
             	url: '/YuJianRoom/FeedBacks/GetList?feedbacktype=1&feedbackstatus='
-            			+$('#feedbackstatus').val()
-                }).datagrid('getPager');
+            			+$('#feedbackstatus').val(),
+            	onDblClickRow: function (index, row) {
+          			$('#tt').datagrid('unselectAll');
+          			$('#tt').datagrid('selectRow',index);
+          			ShowClick();
+                }
+            }).datagrid('getPager');
             
             pager.pagination({
                 showPageList: true,

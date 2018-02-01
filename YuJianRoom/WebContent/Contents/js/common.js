@@ -1,18 +1,63 @@
-var UserInfoModel={
-	show:function(userid){
-		$('#userinfo-form').form({
-    		onLoadSuccess:function(data){
-            	$('#userinfo-headimgurl').attr('src',data.headimgurl);
-            	$('#userinfo-dialog').dialog('open');
-            }
-    	})
-    	$('#userinfo-form').form('clear');
-    	$('#userinfo-form').form('load','/YuJianRoom/Users/GetSingle?id='+userid);
+var UserInfoModel = {
+	showImg : function(id, videourl) {
+		// 加载视频
+		if (videourl == '' || videourl == '') {
+			$('#userimg-dialog-videourl').hide();
+			$('#userimg-dialog-videotip').show();
+		} else {
+			$('#userimg-dialog-videourl').attr("src", videourl);
+			$('#userimg-dialog-videourl').show();
+			$('#userimg-dialog-videotip').hide();
+		}
+		// 加载图片
+		$.post("/YuJianRoom/UserImgs/GetList?userid=" + id, function(data) {
+			var html = '';
+			for (var i = 0; i < data.length; i++) {
+				html += '<img src="' + data[i].userimgurl + '" />'
+			}
+			$('#userimg-form-imgs').html(html);
+			$('#userimg-dialog').dialog('open');
+		}, 'json')
 	},
-	close:function(){
+	show : function(userid) {
+		$('#userinfo-form').form({
+			onLoadSuccess : function(data) {
+				$('#userinfo-headimgurl').attr('src', data.headimgurl);
+				$('#userinfo-dialog').dialog('open');
+
+				$('#userinfo-dialog-imgs').click(function() {
+					UserInfoModel.showImg(userid, data.videourl);
+				});
+			}
+		})
+		$('#userinfo-form').form('clear');
+		$('#userinfo-form').form('load',
+				'/YuJianRoom/Users/GetSingle?id=' + userid);
+	},
+	close : function() {
 		$('#userinfo-dialog').dialog('close');
 	},
-	dialog:function(params){
+	dialog : function(params) {
 		$('#userinfo-dialog').dialog(params);
+	}
+}
+
+var MatchmackerModel = {
+	show : function(userid) {
+		$('#matchmaker-form').form({
+			onLoadSuccess : function(data) {
+				$('#matchmaker-headimgurl').attr('src', data.headimgurl);
+				$('#matchmaker-dialog').dialog('open');
+			}
+		})
+		$('#matchmaker-form').form('clear');
+		$('#matchmaker-form').form('load',
+				'/YuJianRoom/Users/GetSingle?id=' + userid);
+	},
+	close : function() {
+		$('#matchmaker-dialog').dialog('close');
+	},
+	dialog : function(params) {
+		$('#matchmaker-dialog').dialog(params);
 	}
 }

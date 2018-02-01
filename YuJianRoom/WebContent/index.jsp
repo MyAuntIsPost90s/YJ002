@@ -21,7 +21,7 @@
 	<script src="/YuJianRoom/Contents/js/jquery.flot.js" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/md5.js" type="text/javascript" ></script>
 	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
-	<script src="/YuJianRoom/Contents/js/common.js" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.0" type="text/javascript"></script>
 	<style>
     .theme-header-layout{
         height: 46px !important;

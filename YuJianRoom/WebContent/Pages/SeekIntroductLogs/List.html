@@ -231,7 +231,12 @@
         function LoadData() {
             var pager = $('#tt').datagrid({ 
             		url: '/YuJianRoom/SeekIntroductLogs/GetList?userid='+$('#userid').val()
-            		+'&relativeid='+$('#relativeid').val()
+            		+'&relativeid='+$('#relativeid').val(),
+            		onDblClickRow: function (index, row) {
+              			$('#tt').datagrid('unselectAll');
+              			$('#tt').datagrid('selectRow',index);
+              			ShowSingle();
+                	}
             	}).datagrid('getPager');
             pager.pagination({
                 showPageList: true,

@@ -139,8 +139,13 @@
         function LoadData() {
             var pager= $('#tt').datagrid({ 
             	url: '/YuJianRoom/Banners/GetList?bannertype='+bannertype
-            			+'&address='+$('#sel-address').combobox('getValue')
-                }).datagrid('getPager');
+            			+'&address='+$('#sel-address').combobox('getValue'),
+				onDblClickRow: function (index, row) {
+		   			$('#tt').datagrid('unselectAll');
+		   			$('#tt').datagrid('selectRow',index);
+		   			EditClick();
+		     	}
+          	}).datagrid('getPager');
             
             pager.pagination({
                 showPageList: true,

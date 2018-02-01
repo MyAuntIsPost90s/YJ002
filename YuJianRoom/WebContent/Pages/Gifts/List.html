@@ -105,8 +105,13 @@
 
         function LoadData() {
             var pager= $('#tt').datagrid({ 
-            	url: '/YuJianRoom/Gifts/GetList'
-                }).datagrid('getPager');
+            	url: '/YuJianRoom/Gifts/GetList',
+            	onDblClickRow: function (index, row) {
+          			$('#tt').datagrid('unselectAll');
+          			$('#tt').datagrid('selectRow',index);
+          			EditClick();
+            	}
+            }).datagrid('getPager');
             
             pager.pagination({
                 showPageList: true,
