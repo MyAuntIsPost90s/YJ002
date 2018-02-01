@@ -1,0 +1,129 @@
+.minePage{
+	background-color: #EDEEF2;
+}
+.minePage .mine{
+	height: 5rem;
+	padding: 0.5rem;
+	background-color: #fff;
+}
+.mine div{
+	float: left;
+	height: 4rem;
+	border: none;
+}
+.mine .headimg{
+	width: 3.5rem;
+	height:4rem;
+	line-height: 4rem;
+}
+.mine .info{
+	width: 10rem;
+	padding: 0.5rem 0.5rem;
+}
+.mine .opt{
+	width: 5rem;
+}
+.headimg img{
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
+}
+.headimg .vip{
+	width:1rem;
+	height:1rem;
+	position: absolute;
+	left:0.4rem;
+	transform:rotate(-50deg);
+}
+.info .vip{
+	display:block;
+	float:left;
+	text-align:center;
+	color:#E7A54E;
+	font-size: 0.5rem;
+	width: 1.5rem;
+	border-radius: 3px;
+	background-color: #fff;
+	border: 1px solid #E7A54E;
+	margin: 0.2rem 0.3rem;
+}
+.info #realname{float: left;}
+.info label{
+	padding:0;
+	margin:0;
+	display:block;
+	float:left;
+	height:1rem;;
+	width: 100%;
+	font-size: 0.7rem;
+	color: #767876;
+}
+.info label:first-child {
+	color: #000;
+	font-size: 0.8rem;
+}
+.mine .opt a{
+	display:block;
+	font-size:0.7rem;
+	background-color: #fff;
+	border: 1px solid #E7A54E;
+	border-radius: 5px;
+	color: #E7A54E;
+	height: 2rem;
+	width: 4rem;
+	text-align:center;
+	line-height:2rem;
+	margin: 1rem 0;
+	margin-left: 1rem;
+}
+
+.minePage .mine-menu{
+	background-color: #fff;
+	height: auto;
+	overflow: hidden;
+	zoom:1;
+	margin-top: 1rem;
+}
+.mine-menu a{
+	display: block;
+	height:2.5rem;
+	line-height:2.5rem;
+	font-size:0.8rem;
+	border-bottom: 1px solid #f0efee;
+	color: #000;
+	padding-left:0.5rem;
+}
+.mine-menu a b{
+	float: right;
+	height: 1rem;
+	width: 1rem;
+	margin: 0.75rem 0;
+	margin-right: 0.3rem;
+}
+.mine-menu a .goldbalance{
+	float:left;
+    font-size: 0.8rem;
+    color: #919091;
+    margin: 0px;
+    height: 1rem;
+    line-height: 1rem;
+}
+.mine-menu a .goldbalance #goldbalance{
+	display: block;
+	float: right;
+	margin-top: 0.75rem;
+}
+.goldbalance .icon-menu{height: 1rem;width: 1rem;margin-top: 0.75rem;}
+.point-cout{
+	display: block;
+	float: left;
+	width: 1.2rem;
+	height: 1.2rem;
+	border-radius:50%;
+	font-size: 0.7rem;
+	line-height: 1.2rem;
+	text-align: center;
+	margin:0.6rem 0;
+	background-color: #EC4D52;
+	color:#fff;
+}

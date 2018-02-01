@@ -1,0 +1,220 @@
+/** ¡Ù—‘“≥√Ê **/
+.leavewordPage{
+	height: auto;
+	zoom:1;
+	overflow: hidden;
+	padding:49px 1rem;
+}
+.leavewordPage .leavewords-item{
+	padding: 0.2rem 0rem;
+	height: auto;
+	zoom:1;
+	overflow: hidden;
+}
+.leavewords-item .header{
+	height: 2.5rem;
+}
+.leavewords-item .header img{
+	float:left;
+	border-radius: 50%;
+	width: 2.5rem;
+	height: 2.5rem;
+	vertical-align: inherit;
+}
+.leaveword-user{
+	float:left;
+	height: 2.5rem;
+	padding: 0;
+	margin: 0;
+	width: 10rem;
+}
+.leaveword-user label{
+	display: block;
+	color: #C9C1BE;
+	padding: 0.1rem 0.5rem;
+	font-size: 0.8rem;
+	width: 10rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.leavewordto{
+	font-size: 0.7rem;
+	float: right;
+	color: #C9C1BE;
+}
+.leaveword-body{
+	margin:0.25rem 3rem;
+	width: 7rem;
+}
+.leavewordPage .return-btn{
+	float: left;
+	width: 25px;
+	height:30px;
+	margin-left: 0.6rem;
+	margin-top: 5px;
+}
+.words-btn{
+	border: 1px solid #E9E3DF;
+	border-radius: 20px;
+	padding: 2px 2px;
+	font-size: 0.8rem;
+	background-color:#E9E3DF; 
+	color:#CCC3BD;
+	width: 18.5rem;
+	height: 30px;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	margin-top: 5px;
+}
+.word-btn{
+	width: 28px;
+	height:28px;
+	margin-top:8px;
+	margin-left: 0.2rem;
+}
+.gift-btn{
+	width: 32px;
+	height:32px;
+	margin-top:5px;
+	margin-left: 0.2rem;
+}
+.leavewordPage .share-btn{
+	width: 23px;
+    margin-top: 8px;
+    margin-left: 0.2rem;
+    margin-right: 0rem;
+}
+.tabbar{
+	padding:4px 5px;
+	height: auto;
+	min-height: 49px;
+	display: block;
+	z-index: 20;
+}
+
+/* ±Ì«È¡Ù—‘ */
+.expression-board{
+	clear:both;
+	zoom:1;
+	overflow: hidden;
+	height: 0;
+	width: 20rem;
+	margin:-5px;
+	border-top: 1px solid #e8e8e8;
+	margin-top: 5px;
+}
+.expressions-content{
+	width: 20rem;
+	height: 10rem;
+}
+.expressions{
+	width: 20rem;
+	height: 10rem;
+	overflow-y:scroll;
+	-webkit-overflow-scrolling: touch;
+	display: none;
+}
+.expressionbags-borad{
+	overflow-x:scroll;
+	overflow-y:hidden;
+	-webkit-overflow-scrolling: touch;
+	height: 2rem;
+}
+.expressions img{
+	width: 4.7rem;
+	height: 4rem;
+	padding: 0.5rem;
+	border: 1px solid #fff;
+}
+.expressions .active{
+	border-color: #e8e8e8;
+}
+.expressionbags-nav{
+	height: 2rem;
+	border-top:1px solid #e8e8e8;
+}
+.expressionbags img {
+	width: 3rem;
+	height:2rem;
+	border-left: 1px solid #e8e8e8;
+	padding: 0.2rem 0.5rem;
+}
+.expressionbags .active{
+	background-color: #e8e8e8;
+}
+.ex-add{
+	float: left;
+	width: 2rem;
+	height: 2rem;
+	text-align: center;
+	line-height: 1.8rem;
+	color:#888;
+	font-size: 1.5rem;
+	font-weight:100;
+	padding:0;
+}
+.ex-add a{
+	color:#888;
+}
+.ex-return {
+	float: left;
+	width: 3rem;
+	height: 2rem;
+	background-color: #DE5347;
+	color: #fff;
+	font-size: 0.8rem;
+	text-align: center;
+	line-height: 2rem;
+	cursor: pointer;
+}
+.ex-tip{
+	width: 20rem;
+	height: 10rem;
+	text-align: center;
+	line-height: 10rem;
+	color: #DCD1D2;
+	font-size: 1rem;
+}
+.board-background{
+	background-color: rgba(50,50,50,0.5);
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100vh;
+	z-index: 99;
+	display: none;
+}
+
+.leavewordPage .right-item a{
+	float: right;
+}
+.leavewordPage .right-item .leaveword-user{
+	float:right;
+	text-align: right;
+}
+.leavewordPage .right-item img{
+	float:right;
+	clear: both;
+}
+.leavewordPage .right-item .leavewordto{
+	float:left;
+}
+.leavewordPage .leavewords-foot{
+	height: 1.5rem;
+	line-height:1.5rem;
+	width:100%;
+	float: right;
+	text-align: right;
+	font-size: 0.7rem;
+	border-bottom: 1px solid #f0efee;
+}
+.leavewordPage .leavewords-foot a{
+	color:#C9C1BE;
+}
+#main-leaveword{
+	border-bottom: 1px solid #f0efee;
+	margin-bottom: 0.5rem;
+}

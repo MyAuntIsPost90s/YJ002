@@ -1,0 +1,115 @@
+/* 基本图标 */
+.icon{
+	display:block;
+	float:left;
+	width:1.5rem;
+	height: 1.5rem;
+	background-image: url(/YuJian/Contents/images/icon.png?version=1.4.1);
+	background-repeat:no-repeat;
+	background-size:auto 200%; 
+}
+.icon-crown{background-position-x:0%}
+.icon-arrow{background-position-x:11.5%;}
+.icon-word-base{background-position-x:25.2%;}
+.icon-gift-base{background-position-x:37.8%;}
+.icon-share{background-position-x:50.5%;}
+.icon-qzone{background-position-x:63.2%;}
+.icon-play{background-position-x:76.5%;}
+.icon-camera{background-position-x:88%;}
+.icon-search{background-position-x:100%;}
+.icon-heart-white{background-position-x:0%;background-position-y:100%;}
+.icon-shopcar{background-position-x:12.2%;background-position-y:100%;}
+.icon-rtriangle {  
+	display: inline-block; 
+	border-right: 0.15rem solid;
+	border-bottom: 0.15rem solid;  
+	width: 1rem;
+	height: 1rem; 
+	transform: rotate(-45deg);
+ }
+ .icon-ltriangle {  
+	display: inline-block; 
+	border-right: 0.15rem solid;
+	border-bottom: 0.15rem solid;  
+	width: 1rem; 
+	height: 1rem;  
+	transform: rotate(135deg);
+}
+/* 菜单图标 */
+.icon-menu{
+	display:block;
+	float:left;
+	width:1.5rem;
+	height:1.5rem;
+	background-image: url(/YuJian/Contents/images/menu.png?version=0.0);
+	background-repeat:no-repeat;
+	background-size:auto 200%; 
+	margin:0.5rem 0;
+	margin-right: .5rem;
+}
+.icon-gift{background-position-x:0%; }
+.icon-redheart{background-position-x:0%;background-position-y:100% }
+.icon-word{background-position-x:14%; }
+.icon-collect{background-position-x:28%; }
+.icon-likeme{background-position-x:42%; }
+.icon-heard{background-position-x:56%; }
+.icon-doller{background-position-x:71%; }
+.icon-user-menu{background-position-x:86%; }
+.icon-connect{background-position-x:100%; }
+
+/* tab图标 */
+.icon-tab{
+	display:block;
+	float:left;
+	width:1rem;
+	height:1rem;
+	background-image: url(/YuJian/Contents/images/tab.png);
+	background-repeat:no-repeat;
+	background-size:auto 100%; 
+}
+.icon-home{background-position-x:0%; }
+.icon-home-active{background-position-x:13.5%; }
+.icon-shop{background-position-x:27.5%; }
+.icon-shop-active{background-position-x:42%; }
+.icon-rank{background-position-x:57.5%; }
+.icon-rank-active{background-position-x:73.5%; }
+.icon-user{background-position-x:87%;}
+.icon-user-active{background-position-x:100%;}
+
+/* hobby图标 */
+.icon-hobby{
+    display:block;
+    float:left;
+    width:3rem;
+    height:3rem;
+    background:url(/YuJian/Contents/images/hobby.png) no-repeat;
+    background-size:auto 100%;
+}
+.icon-out-active{background-position-x:0%;}
+.icon-out{background-position-x:5.95%;}
+.icon-music-active{background-position-x:11.85%;}
+.icon-music{background-position:17.8%;}
+.icon-movie-active{background-position:23.7%;}
+.icon-movie{background-position:29.55%;}
+.icon-food-active{background-position:35.55%;}
+.icon-food{background-position:41.3%;}
+.icon-game-active{background-position:47.5%;}
+.icon-game{background-position:53.2%;}
+.icon-sport-active{background-position:59.05%;}
+.icon-sport{background-position:64.9%;}
+.icon-read-active{background-position:70.8%;}
+.icon-read{background-position:76.6%;}
+.icon-dance-active{background-position:82.65%;}
+.icon-dance{background-position:88.45%;}
+.icon-animation-active{background-position:94.4%;}
+.icon-animation{background-position:100.25%;}
+.icon-sort{
+ 	display:block;
+    float:left;
+    width:1rem;
+    height:1rem;
+    background:url(/YuJian/Contents/images/icon-rank.png) no-repeat;
+    background-size:auto 100%;
+}
+.icon-flower{background-position-x:0%;}
+.icon-rich{background-position-x:100%;}

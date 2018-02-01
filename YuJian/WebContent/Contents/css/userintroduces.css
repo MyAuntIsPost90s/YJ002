@@ -1,0 +1,11 @@
+.webpersonPage {padding-bottom: 2.5rem;min-height: 100vh;}
+.webpersonPage .person-list { border-bottom: 1px solid #fff;padding: 5px; }
+.webpersonPage .person-list .item { display: flex; padding:0.1rem 0}
+.webpersonPage .person-list .avatar { margin-right: 10px;position: relative;width: 6rem;height: 6rem; }
+.webpersonPage .person-list .avatar img { width: 100%;height: 100%; }
+.webpersonPage .person-list .avatar span { position: absolute;right: 3px;bottom: 3px;background: rgba(0,0,0,0.9);font-size: 0.5rem;color: #fff;line-height: 1;padding: 2px; }
+.webpersonPage .person-list .avatar span i { font-style: normal;vertical-align: middle; }
+.webpersonPage .person-list .avatar span img { height: 0.5rem;width: auto; vertical-align: middle;margin-right: 5px; }
+.webpersonPage .person-list .intro { font-size: 0.8rem; color: #929292; }
+.webpersonPage .person-list .intro p {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.webpersonPage .add-btn { position: fixed; left: 0; bottom: 0; right: 0; background: #EB6C77 url("../images/addbg.png") no-repeat center center / 1.5rem 1.5rem; height: 2rem;}

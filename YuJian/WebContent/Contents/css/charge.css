@@ -1,0 +1,81 @@
+/*充值页面*/
+.rechargePage{
+	height: 100%;
+	background-color: #EAF0F6;
+}
+.rechargePage .header{
+	width: 20rem;
+	height:3rem;
+	padding:0;
+	background-color: #fff;
+	border-bottom: 1px solid #C0CDD4;
+}
+.rechargePage .header label{
+	height: 3rem;
+	line-height: 3rem;
+	display:inline-block;
+	padding:0rem 2rem;
+	border-bottom: 3px solid #F39900;
+	color: #F39900;
+}
+.balance-tip{
+	color:#C0CDD4;
+	padding:0.5rem;
+	font-size: 0.7rem;
+}
+.charges{
+	overflow: hidden;
+	zoom:1;
+	height: auto;
+	padding:0.25rem;
+}
+.charges div{
+	float:left;
+	color:#fff;
+	width: 4.2rem;
+	height:2rem;
+	line-height:2rem;
+	margin: 0.25rem;
+	background-color: #fff;
+	color:#000;
+	font-size: 0.8rem;
+	text-align: center;
+	border: 1px solid #C0CDD4;
+	border-radius: 5px;
+}
+.charges .active{
+	background-color: #F39900;
+	color:#fff;
+	border-color: #EAF0F6;
+}
+.charges-btn {
+	padding: 0.5rem;
+}
+.charges-btn button{
+	background-color: #F39900;
+	padding: 0.5rem;
+	width: 100%;
+	text-align: center;
+	color:#fff;
+	border: none;
+	border-radius: 5px;
+}
+.pay-tip{
+	width:13rem;
+	height: 13rem;
+	float: left;
+	margin:45% 3.5rem; 
+}
+.pay-tip img{
+	width: 5rem;
+	margin:0.1rem 4rem;
+}
+.pay-tip a{
+	color:#EAB267;
+	text-decoration: 1px solid blue;
+}
+.pay-tip p{
+	color:#888;
+	padding:1rem;
+	text-align: center;
+}

@@ -1,0 +1,225 @@
+a{color:#EAB267}
+/*送礼物*/
+.sendgiftPage .sendgiftList { background: #fff;padding-top: 1px; }
+.sendgiftPage .sendgiftFooter { height: 2.5rem; position: fixed;left: 0; right:0; bottom: 0; background: #f0f0f0;margin: 0 auto;width: 20rem;z-index: 11;}
+.sendgiftPage .sendgiftFooter span { font-size: 0.95rem;color: #231815; padding-top: 0.6rem; float: left;text-align: right;width: 7rem;display: block;padding-right: 0.5rem}
+.sendgiftPage .sendgiftFooter i { font-size: 0.95rem;color: #e60212;font-style: normal;padding-left: 0.3rem; }
+.sendgiftPage .sendgiftFooter label {height: 100%;font-size: 1rem;color: #fff;padding: 0 20px;background:#ea5515; float: right;width: 5rem;text-align: center;line-height: 2.5rem}
+.send-gift{position: fixed;z-index: 20;left:75%;top:80vh;width: 3rem;height: 3rem;}
+
+/*弹窗*/
+.gift-item{
+	float: left;
+	padding: 0.1rem;
+	width: 6.66rem;
+	text-align: center;
+	font-size: 0.7rem;
+	color: #dbba25;
+	position: relative;
+	border: 1px solid #fff;
+}
+.gift-item .cost-info{
+	text-align: left;
+	padding: 0 ;
+	height: 1.2rem;
+	line-height: 1.2rem;
+}
+.gift-item img{
+	width: 6.46rem;
+	height: 6.46rem;
+	border: 1px solid #f0efee;
+	border-radius: 5px;
+}
+.gift-item .opt{
+	border-top: 1px solid #f0efee;
+	padding: 0.1rem 0;
+}
+.gift-item .opt input {
+    width: 50%;
+    background: #f0f0f0;
+    border: none;
+    margin: 0 2%;
+    display: inline-block;
+    text-align: center;
+    border-radius: 0px;
+    line-height: 1.2rem;
+    height: 1.2rem;
+    float:left;
+}
+.gift-item .opt a{
+    width: 23%;
+    background: #f0f0f0;
+    text-align: center;
+    line-height: 1.2rem;
+    font-size: 1rem;
+    color: #231815;
+    height: 1.2rem;
+    float:left;
+    border: none;
+}
+.gift-item .content{
+	margin-top:0.1rem;
+	border-top: 1px solid #f0efee; 
+	text-align: left;
+	font-size: 0.6rem;
+	height: 1.9rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display:-webkit-box; 
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2; 
+}
+.gift-item .title{
+	float:left;
+	display: block;
+	width: 3.2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.gift-item .cost{
+	display:block;
+	float:left;
+	width: 3rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.gift-item .vip{
+	position: absolute;
+	top: 5.2rem;
+	left:0;
+	font-size: 0.8rem;
+	text-align: right;
+	width: 6.46rem;
+	padding:0.2rem 0.2rem;
+}
+.gift-item .vip img{
+	width: 1.5rem;
+	height: auto;
+	margin-top:-0.3rem;
+	border:none;
+}
+.gift-item .icon-rich{
+	margin-left: 0;
+	margin-top: 0.1rem
+}
+
+.sendgiftFooter .icon{
+	width: 2rem;
+	height: 2rem;
+	margin-top: 0.25rem;
+	margin-left: 0.25rem;
+}
+.sendgiftFooter .cost-item{
+	float: right;
+	height: 100%;
+	width: 12rem;
+}
+.sendgiftFooter .shopcar-icon{
+	float: left;
+	line-height: 2.5rem;
+	height: 100%;
+	width: 2.5rem;
+	position: relative;
+}
+.sendgiftFooter .shopcar-icon .point{
+	width:1rem;
+	height:1rem;
+	padding:0;
+	text-align:center;
+	line-height:1rem;
+	display:inline;
+	background-color: #F29700;
+	position: absolute;
+	font-size: 0.5rem;
+	border-radius: 50%;
+	color: #fff;
+	top:0.1rem;
+}
+
+.shopcar{
+	position: fixed;
+	bottom:-12.5rem;
+	max-height:10rem;
+	height: 10rem;
+	z-index: 10;
+}
+.shopcar .header{
+	height: 2rem;
+	line-height: 2rem;
+	background-color: #EBEBEB;
+	width: 20rem;
+	margin: 0 auto;
+	font-size: 0.7rem;
+}
+.shopcar .header .title{
+	float: left;
+	padding: 0 0.5rem;
+}
+.shopcar .header .btn-clear{
+	float: right;
+	padding: 0 0.5rem;
+}
+.shopcar .body{
+	background-color: #fff;
+	height: 8rem;;
+	font-size: 0.7rem;
+	overflow-y:scroll;
+	-webkit-overflow-scrolling:touch;
+	z-index: 10;
+}
+.shopcar-item{
+	height: 3rem;
+	line-height: 2rem;
+	border-bottom: 1px solid #f0efee;
+	padding: 0.5rem;
+	z-index: 10;
+}
+.shopcar-item .item-head{
+	float: left;
+}
+.shopcar-item .item-head img{
+	width: 2rem;
+	height: 2rem;
+	margin-right: 0.5rem;
+}
+.shopcar-item .item-opt{
+	float: right;
+}
+.shopcar-item .item-opt .opt-cost{
+	color: #E40004;
+}
+.shopcar-item .item-opt a{
+	display:inline-block;
+	height: 1.2rem;
+	width: 1.2rem;
+	line-height:1rem;
+	text-align:center;
+	border: 1px solid #E28D01;
+	border-radius: 50%;
+	color: #E28D01;
+	padding: 0;
+}
+.shopcar-item .item-opt input {
+	width: 2rem;
+    background: #fff;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    border-radius: 0px;
+    line-height: 1.2rem;
+    height: 1.2rem;
+}
+
+/*用户的礼物*/
+.giftPage .no-data{display: flex;width: 100vw;height: 100vh;justify-content: center; align-items: center; color: #838383;font-size: 1.5rem; }
+.giftPage .my-gift { background: #f0f0f0;padding-top: 10px;padding-bottom: 1px ; }
+.giftPage .my-gift li { display: flex;justify-content: space-between;align-items: center; padding: 15px;background: #fff;margin-bottom: 10px; }
+.giftPage .my-gift li>span { font-size:0.9rem;color: #df72a9;display: flex;align-items: center; }
+.giftPage .my-gift li>span img { width: 2.6rem;height: 2.6rem;border-radius: 100%;margin-right: 10px; }
+.giftPage .my-gift li>span i { font-style: normal;color: #231815;width: 4em;overflow:hidden;text-overflow: ellipsis;white-space: nowrap; }
+.giftPage .my-gift li label { display: flex;justify-content: flex-end; align-items: flex-end;font-size: 0.6rem; }
+.giftPage .my-gift li label span { background: #ccc;display: inline-block; width:5rem;height: 5rem;margin-right:0.5rem; }
+.giftPage .my-gift li label span img { width: 100%;height: 100%; }
+.giftPage .my-gift li label b { font-weight: normal;color: #231815;width: 3rem;text-align: right;overflow:hidden;}

@@ -1,0 +1,151 @@
+/* 注册上传头像 */
+.uploadheadimg-btn{
+	width: 10rem;
+	height:10rem;
+	padding:1.8rem 0;
+	margin-top: 5rem;
+	margin-left: 5rem;
+	margin-right: 5rem;
+	border: 2px dotted #6A6A6B;
+	border-radius:0.5rem;
+	text-align: center;
+}
+.uploadheadimg-btn img{
+	width: 4.5rem;
+	margin-bottom: 1rem;
+}
+.uploadheadimg-btn p{
+	color: #89898B;
+	font-size: 0.9rem;
+}
+.uploadheadimg-label{
+	display:block;
+	color: #89898B;
+	font-size: 0.8rem;
+	text-align: center;
+	padding: 1rem;
+	margin-bottom: 2rem;
+}
+.uploadheadimg-label i,.uploadheadimg-tip i{
+	font-style: normal;
+	color: #E5A965;
+}
+.uploadheadimg-tip{
+	display:block;
+	color: #89898B;
+	font-size: 0.7rem;
+	text-align: left;
+	padding:0 1rem;
+}
+.register-btn-next{
+	width: 18rem;
+	margin:0.5rem 1rem;
+	background-color: #E3A54E;
+	color:#fff;
+	font-size: 0.9rem;
+	padding: 0.5rem;
+	border: 1px solid #fff;
+	border-radius: 1.5rem;
+}
+.headimg{
+	width: 10rem;
+	padding:1.5rem 0;
+	margin-top: 5rem;
+	margin-left: 5rem;
+	margin-right: 5rem;
+	text-align: center;
+}
+.headimg img{
+	width:6rem;
+	height:6rem;
+	border: 1px solid #fff;
+	border-radius:50%;
+}
+.enable{
+	background-color: #707070;
+}
+
+/* 注册基本信息 */
+.register-item{
+	height: 2.2rem;
+	line-height:2.2rem;
+	padding:0 1rem;
+	border-bottom: 1px solid #f0efee;
+	font-size: 0.8rem;
+}
+.register-item:last-child{
+	border-bottom: 1px solid #fff;
+	margin-bottom: 1rem;
+}
+.register-item label {
+	display:inline-block;
+	width:4rem;
+	color: #868585;
+}
+.register-item input{
+	outline: none;
+	border: none;
+	width:13.5rem;
+	height:1rem;
+	text-align:right;
+	-webkit-appearance: none;
+}
+.register-item select{-webkit-appearance:none;border:0;direction:inherit;border:0;background-repeat:no-repeat;float: right;margin-top: 0.5rem}
+.mbsc-ios .mbsc-dt-whl-m .mbsc-sc-itm{
+	text-align: center;
+}
+.mbsc-ios .mbsc-dt-whl-d .mbsc-sc-itm{
+	text-align: center;
+}
+
+/* 注册兴趣爱好 */
+.hobby{
+	height: auto;
+	zoom:1;
+	overflow: hidden;
+	padding: 0.25rem;
+	font-size: 0.8rem;
+}
+.hobby .hobby-item{
+	float: left;
+	background-color: #fff;
+	width:6.5rem;
+	height:7rem;
+	padding:0.5rem;
+	text-align: center;
+}
+.hobby-item i{
+	height: 5rem;
+	width: 5rem;
+}
+
+.updatesigncontent #signcontent,.updatesigncontent textarea{
+	font-size: 0.8rem;
+	color: #888;
+	border: 1px solid #e8e8e8;
+	border-radius: 5px;
+	padding: 0.5rem;
+	height: 10rem;
+	width:  18rem;
+	margin: 1rem;
+	background-color: #FFFFD1;
+}
+
+.register-item-search{
+	text-align: center;
+	border-bottom: 1px solid #f0efee;
+	height: 2.2rem;
+	line-height: 2.2rem;
+	padding:0 1rem;
+	font-size: 0.8rem;
+}
+.registerbase .register-item-search input{
+	text-align: center;
+	width:18rem;
+	border-radius:8px;
+	border:1px solid #fff;
+	background-color: #ebeced;
+	padding:0.25rem 0.5rem;
+	-webkit-appearance: none;
+	color:#868585;
+}

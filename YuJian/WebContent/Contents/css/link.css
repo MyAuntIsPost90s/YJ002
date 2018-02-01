@@ -1,0 +1,20 @@
+/*联系*/
+.assistPage{background: #f0efee;min-height: 100vh}
+.assistPage .optionbox { padding-top: 20px;background: #f0efee;}
+.assistPage .optionbox ul { background: #fff;border-top:1px solid #727172;display: flex;flex-wrap: wrap;}
+.assistPage .optionbox ul li { width: 50%;padding: 20px 15px;position: relative;font-size: 0.8rem;color: #848383;border-left: 1px solid #727172;border-bottom: 1px solid #727172;z-index: 1; }
+.assistPage .optionbox ul li:nth-child(odd) { border-left: none; }
+.assistPage .optionbox ul li:nth-child(even):before{ content: '';position: absolute;display: inline-block;width: 15px;height: 15px;background: #fff;border-radius: 100%;top: -7.5px;left: -7.5px;z-index: 2; }
+.assistPage .optionbox ul li:nth-child(2):before { background: none; }
+.assistPage .form { padding: 25px 10px;background: #f0efee;text-align: center; }
+.assistPage .form textarea { width: 100%;font-size: 0.8rem;color:#848383;border:none;padding: 15px;  }
+.assistPage .form button { 
+	width: 19rem;
+	margin:1rem 0rem;
+	background-color: #727172;
+	color:#fff;
+	font-size: 0.9rem;
+	padding: 0.5rem;
+	border: 1px solid #fff;
+	border-radius: 1.5rem;
+}

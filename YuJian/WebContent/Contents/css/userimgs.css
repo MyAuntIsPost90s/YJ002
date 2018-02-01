@@ -1,0 +1,24 @@
+.userimgs{background-color: #fff;height: 100%;padding: 0px;padding-top: 49px;}
+.swiper-slide{
+	line-height:calc(100vh - 49px - 2rem);
+}
+.swiper-wrapper img{
+	display:inline-block;
+	width: 20rem;
+	border-radius:0;
+	margin:0px;
+}
+.userimg-foot{
+	height: 2rem;
+	line-height:2rem;
+	font-size: 0.8rem;
+	padding:0 0.5rem;
+	border-top:1px solid #f0efee; 
+	color: #888;
+}
+.userimg-foot .img-page{
+	display: inline;
+}
+.userimg-foot .btn-del{
+	float: right;
+}

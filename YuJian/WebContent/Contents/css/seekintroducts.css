@@ -1,0 +1,15 @@
+.seekintroduct-list{background-color: #fff;height: auto;overflow: hidden;zoom:1;}
+.seekintroduct-item{overflow: hidden;zoom:1;padding: 0.5rem;width: 20rem;border-bottom: 1px solid #f0efee}
+.seekintroduct-item .close-btn{position: absolute;display: inline-block;width: 1rem;height: 1rem;text-align: center;line-height: 1rem;background-color: rgba(50,50,50,0.6);color: #fff;left: 18.5rem}
+.seekintroduct .user{display: inline-block;width: 7.5rem;}
+.seekintroduct .user .msg{display: inline-block;width: 3rem;padding:0 0.3rem}
+.seekintroduct .user img{display:inline-block; width: 4rem;height: 4rem;border-radius: 0.5rem}
+.seekintroduct .user label {display: inline-block;width: 3rem;font-size: 0.7rem;color: #888;white-space: nowrap;text-overflow: ellipsis;}
+.seekintroduct-logo{width: 2.5rem;display: inline-block;margin-right: 0.8rem}
+
+.seekintroduct .single-user{display: inline-lock;;width:100%;}
+.seekintroduct .single-user label {display:block;width: 100%;padding:0.2rem 0.2rem;font-size: 0.7rem;color: #888;white-space: nowrap;text-overflow: ellipsis;}
+.seekintroduct .single-user .msg{display:block;float:right;width: 15rem;padding:0 0.3rem}
+.seekintroduct .user .msg{display: inline-block;width: 3rem;padding:0 0.3rem}
+.seekintroduct .user img,.single-user img{display:inline-block; width: 4rem;height: 4rem;border-radius: 0.5rem}
+.seekintroduct .user label {display: inline-block;width: 3rem;font-size: 0.7rem;color: #888;white-space: nowrap;text-overflow: ellipsis;}

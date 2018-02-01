@@ -1,0 +1,93 @@
+a{color:#EAB267}
+.expression-item{margin: 0px;padding: 0.5rem;}
+/* 表情商城 */
+shop-page.wrapper {
+    background: #f0efee;
+}
+.shop-page .purchased-wrap {
+    background: #ffffff;
+}
+.shop-page .purchased-wrap .title {
+    margin-top: 0rem;
+    padding: 0.5rem 0;
+    text-align: center;
+}
+
+.shop-page .purchased-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+}
+.expression-list li:nth-child(3n+2){
+	margin: 0 0.25rem;
+}
+.purchased-list .expression-item{
+	margin-right: 0.25rem;	
+}
+.shop-page .expression-item {
+    width: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #f1f1f1;
+}
+
+.shop-page .expression-item img {
+    width: 5.8rem;
+    height:5.8rem;
+    display: block;
+}
+
+.shop-page .expression-item > div {
+    padding: 0.5rem 0;
+    font-size: 0.7rem;
+    background-color: #fff;
+   	width: 100%;
+   	text-align: center;
+}
+
+.shop-page .expression-item > span {
+    padding: 0.2rem 0.8rem;
+    border-top:1px solid #f0efee;
+    font-size: 0.7rem;
+    cursor: pointer;
+    width: 5.8rem;
+}
+
+.shop-page .expression-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    background: #ffffff;
+}
+
+.shop-page .expression-list .expression-item:nth-child(3n+3) {
+    margin-right: 0;
+}
+.shop-page .expression-list .expression-item {
+    margin-bottom: 0.25rem;
+}
+
+.foot-bar{
+	position:fixed;
+	bottom:0px;
+	padding: 4px 1rem;
+    height: 49px;
+    display: block;
+    z-index: 20;
+    background-color: #fff;
+    border-top: 1px solid #f0efee;
+}
+.foot-bar button {
+	width: 18rem;
+	height:41px;
+	background-color: #E3A54E;
+	color:#fff;
+	font-size: 0.9rem;
+	text-align:center;
+	border: 1px solid #fff;
+	border-radius: 1.5rem;
+}
+.foot-bar .disable{
+	background-color: #9c9c9c;
+}
