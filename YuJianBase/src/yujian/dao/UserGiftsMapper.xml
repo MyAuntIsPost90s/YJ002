@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserGiftsMapper">
+	<resultMap type="yujian.models.UserGiftsAndUG" id="GiftsMap">
+		<result property="usergifttime" column="usergifttime" />
+		<collection property="gifts" column="{groupid=groupid,userid=touserid,usergifttime=usergifttime}" select="getGifts"></collection>
+	</resultMap>
+	<select id="getGifts" resultType="yujian.models.UserGiftsAndUG">
+		SELECT ug.*,g.* FROM usergifts ug
+		LEFT JOIN gifts g ON ug.giftID=g.giftID
+		WHERE groupid=#{groupid} and ug.toUserID=#{userid} and ug.userGiftTime=#{usergifttime}
+	</select>
+	<select id="getUserGifts" resultMap="GiftsMap">
+	<![CDATA[
+		SELECT ug.*,u.realname,u.headimgurl
+		FROM (SELECT groupid,usergifttime,fromuserid,touserid FROM usergifts
+		GROUP BY groupid,userGiftTime,fromuserid,touserid) ug
+		LEFT JOIN users u ON ug.fromUserID=u.userID
+		WHERE ug.toUserID=#{userid}
+		order by usergifttime desc
+		limit #{skip},#{take}
+	]]>
+	</select>
+	
+	<select id="getUserGiftsRank" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		SELECT * FROM (SELECT temp.*,@i:=@i+1 AS usersortid FROM (SELECT u.*,SUM(usergiftcost) AS usersortcount FROM usergifts ug
+		LEFT JOIN users u ON ug.fromUserID=u.userID
+		WHERE u.userID IS NOT NULL AND ug.toUserID=#{userid}
+		GROUP BY ug.fromUserID
+		ORDER BY usersortcount DESC) temp,(SELECT @i:=0) n) table1
+		limit #{skip},#{take}
+	]]>
+	</select>
+	<select id="getMyGiftRank" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		SELECT * FROM (SELECT temp.*,@i:=@i+1 AS usersortid FROM (SELECT u.*,SUM(usergiftcost) AS usersortcount FROM usergifts ug
+		LEFT JOIN users u ON ug.fromUserID=u.userID
+		WHERE u.userID IS NOT NULL AND ug.toUserID=#{userid}
+		GROUP BY ug.fromUserID
+		ORDER BY usersortcount DESC) temp,(SELECT @i:=0) n) table1
+		WHERE table1.userid=#{myid}
+		limit 0,1
+	]]>
+	</select>
+
+	<insert id="add" parameterType="yujian.models.UserGifts">
+		insert into usergifts(fromuserid,touserid,giftid,giftcount,usergiftcost,usergifttime)
+		values(#{fromuserid},#{touserid},#{giftid},#{giftcount},#{usergiftcost},#{usergifttime})
+	</insert>
+	<insert id="addMore" parameterType="java.util.List">
+		insert into usergifts(fromuserid,touserid,giftid,giftcount,usergiftcost,usergifttime)
+		values
+		<foreach collection="models" item="item" index="index" separator="," >  
+        (#{item.fromuserid},#{item.touserid},#{item.giftid},#{item.giftcount},#{item.usergiftcost},#{item.usergifttime})
+        </foreach>
+	</insert>
+	
+	<delete id="deleteByUserID">
+		delete from usergifts
+		where touserid=#{userid}
+	</delete>
+</mapper>

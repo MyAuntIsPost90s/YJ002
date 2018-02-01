@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.ExpressionBagsMapper">
+	<select id="getListByPage" resultType="yujian.models.ExpressionBags">
+		select * from expressionbags
+		limit #{skip},#{take}
+	</select>
+	<select id="getExpressionBagsNoUser" resultType="yujian.models.ExpressionBags">
+		SELECT *  FROM expressionbags
+		where expressionBagID not in
+		(select expressionBagID from userexpressionbags where userid=#{userid})
+		and expressionbagisdefault=0
+		limit #{skip},#{take}
+	</select>
+	<select id="getSingle" resultType="yujian.models.ExpressionBags">
+		select * from  expressionbags
+		where expressionbagid=#{expressionbagid}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		select count(*) from expressionbags
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.ExpressionBags">
+		insert into expressionbags(expressionbagid,expressionbagtitle,ebcost,expressionbagurl,expressionbagisdefault)
+		values(#{expressionbagid},#{expressionbagtitle},#{ebcost},#{expressionbagurl},#{expressionbagisdefault})
+	</insert>
+	<update id="update" parameterType="yujian.models.ExpressionBags">
+		update expressionbags set
+		expressionbagtitle=#{expressionbagtitle}
+		,ebcost=#{ebcost}
+		,expressionbagurl=#{expressionbagurl}
+		,expressionbagisdefault=#{expressionbagisdefault}
+		where expressionbagid=#{expressionbagid}
+	</update>
+	<delete id="delete">
+		delete from expressionbags
+		where expressionbagid in
+		<foreach collection="list" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

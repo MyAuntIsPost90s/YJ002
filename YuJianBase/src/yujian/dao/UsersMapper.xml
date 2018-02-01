@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UsersMapper">
+	<select id="getListByPage" resultType="yujian.models.UsersView">	
+		select *
+		,(SELECT COUNT(*) FROM usercollections WHERE userCollectionID=u.userID and userid=#{myuserid}) as iscollect
+		from (select * from users where <![CDATA[usertype<2]]> and realname!='') u
+		LEFT JOIN userintroduces ui ON u.userID =ui.uIUserID
+		WHERE (ui.userIntroduceStatus IS NULL OR ui.userIntroduceStatus!=0)
+		<if test="condition!=null and condition!=''">
+			and realname like #{condition}
+		</if>
+		<if test="address!=null and address!=''">
+			and address like #{address}
+		</if>
+		<if test="height!=null and height!=''">
+			and height=#{height}
+		</if>
+		<if test="sex > -1">
+			and sex=#{sex}
+		</if>
+		<if test="wage!=null and wage!=''">
+			and wage=#{wage}
+		</if>
+		<if test="record!=null and record!=''">
+			and record=#{record}
+		</if>
+		<if test="bloodtype!=null and bloodtype!=''">
+			and bloodtype=#{bloodtype}
+		</if>
+		<if test="usertype==0">
+			<![CDATA[and usertype<1]]>
+		</if>
+		<if test="usertype==1">
+			and usertype=#{usertype}
+		</if>
+		<if test="otherfunction!=null">
+			and (otherfunction=#{otherfunction})
+		</if>
+		<if test="btime!=null and etime!=null">
+			<![CDATA[and birthday >= STR_TO_DATE(#{btime},"%Y-%m-%d") and birthday <= STR_TO_DATE(#{etime},"%Y-%m-%d")]]>
+		</if>
+		order by usersortindex desc,createtime desc
+		limit #{skip},#{take}
+	</select>
+	<select id="searchListByPage" resultType="yujian.models.UsersView">	
+		select *
+		from (select * from users where realname!='' and <![CDATA[usertype<2]]>) u
+		LEFT JOIN userintroduces ui ON u.userID =ui.uIUserID
+		WHERE (ui.userIntroduceStatus IS NULL OR ui.userIntroduceStatus!=0)
+		<if test="condition!=null and condition!=''">
+			and (realname like #{condition}
+			or address like #{condition}
+			or u.userid=REPLACE (#{condition}, '%', ''))
+		</if>
+		order by usersortindex desc,createtime desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getListByPageNoRed" resultType="yujian.models.Users">
+		select * from users
+		where 1=1
+		<if test="condition!=null and condition!=''">
+			and (realname like #{condition} or phone like #{condition}
+			or userid=REPLACE (#{condition}, '%', ''))
+		</if>
+		<if test="otherfunction!=null">
+			and otherfunction=#{otherfunction}
+		</if>
+		<if test="address!=null and address!=''">
+			and address like #{address}
+		</if>
+		<if test="otherfunction!=null">
+			and otherfunction=#{otherfunction}
+		</if>
+		<if test="usertype==null">
+			and usertype>-1
+		</if>
+		<if test="usertype!=null">
+			and usertype=#{usertype}
+		</if>
+		<if test="record!=null and record!=''">
+			and record=#{record}
+		</if>
+		<if test="sex!=null">
+			and sex=#{sex}
+		</if>
+		<if test="height!=null and height!=''">
+			and height=#{height}
+		</if>
+		order by usersortindex desc,hotcount desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getListByPageOnlyRed" resultType="yujian.models.Users">
+		select * from users
+		where usertype=-1
+		<if test="condition!=null and condition!=''">
+			and realname like #{condition} or phone like #{condition}
+			or userid=REPLACE (#{condition}, '%', '')
+		</if>
+		<if test="address!=null and address!=''">
+			and address like #{address}
+		</if>
+		order by usersortindex desc,hotcount desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getListByHotCount" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		select * from users
+		where userType>-1 AND userType<2 and realname!=''
+		order by hotcount desc
+		limit #{skip},#{take}
+	]]>
+	</select>
+	<select id="getListByRiches" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		select * from users
+		where userType>-1 AND userType<2 and realname!=''
+		order by riches desc
+		limit #{skip},#{take}
+	]]>
+	</select>
+	<select id="getMyHotCountIndex" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		SELECT * FROM (SELECT u.*,@i:=@i+1 AS usersortid FROM users u
+		,(SELECT @i:=0) n
+		WHERE u.userType>-1 AND u.userType<2
+		ORDER BY u.hotCount DESC) temp
+		WHERE temp.userid=#{userid}
+	]]>
+	</select>
+	<select id="getMyRichesIndex" resultType="yujian.models.UsersSortView">
+	<![CDATA[
+		SELECT * FROM (SELECT u.*,@i:=@i+1 AS usersortid FROM users u
+		,(SELECT @i:=0) n
+		WHERE u.userType>-1 AND u.userType<2
+		ORDER BY u.riches DESC) temp
+		WHERE temp.userid=#{userid}
+	]]>
+	</select>
+	
+	<select id="getSingleByPhone" resultType="yujian.models.Users">
+		select * from users
+		where phone=#{phone}
+		Limit 0,1
+	</select>
+	<select id="getSingleByUserID" resultType="yujian.models.Users">
+		select * from users
+		where userid=#{userid}
+		Limit 0,1
+	</select>
+	<select id="getSingleByWXUID" resultType="yujian.models.Users">
+		select * from users
+		where weixinuid=#{weixinuid}
+		Limit 0,1
+	</select>
+	<select id="getSingleByWXOID" resultType="yujian.models.Users">
+		select * from users
+		where weixinoid=#{weixinoid}
+		Limit 0,1
+	</select>
+	<select id="getSingleByMatchmakerType" resultType="yujian.models.Users">
+		select * from users
+		where matchmakertype=#{matchmakertype}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		select Count(*) from users where 1=1
+		<if test="condition!=null and condition!=''">
+			and realname like #{condition} or phone like #{condition}
+		</if>
+		<if test="otherfunction!=null">
+			and otherfunction=#{otherfunction}
+		</if>
+	</select>
+	<select id="getCountNoRed" resultType="java.lang.Long">
+		select Count(*) from users
+		where 1=1 
+		<if test="condition!=null and condition!=''">
+			and (realname like #{condition} or phone like #{condition}
+			or userid=REPLACE (#{condition}, '%', ''))
+		</if>
+		<if test="address!=null and address!=''">
+			and address like #{address}
+		</if>
+		<if test="otherfunction!=null">
+			and otherfunction=#{otherfunction}
+		</if>
+		<if test="usertype==null">
+			and usertype>-1
+		</if>
+		<if test="usertype!=null">
+			and usertype=#{usertype}
+		</if>
+		<if test="record!=null and record!=''">
+			and record=#{record}
+		</if>
+		<if test="sex!=null">
+			and sex=#{sex}
+		</if>
+		<if test="height!=null and height!=''">
+			and height=#{height}
+		</if>
+	</select>
+	<select id="getCountOnlyRed" resultType="java.lang.Long">
+		select Count(*) from users
+		where usertype=-1 
+		<if test="condition!=null and condition!=''">
+			and realname like #{condition} or phone like #{condition}
+			or userid=REPLACE (#{condition}, '%', '')
+		</if>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
+	</select>
+	<select id="getUserAddress" resultType="java.lang.String">
+		SELECT DISTINCT SUBSTRING_INDEX(address, ' ', 1) FROM users
+		<if test="usertype!=null">
+			where usertype=#{usertype}
+		</if>
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.Users" useGeneratedKeys="true" keyProperty="userid">
+		insert into users(headimgurl,address,phone,password,occupation,hobby
+		,realname,weixinnum,qqnum,hotcount,birthday,height,sex,createtime,videourl,usertype,record
+		,usersortindex,weixinuid,weixinoid,signcontent,married,wage,bloodtype,selectcondition,otherfunction,remark
+		,goldbalance)
+		values(#{headimgurl},#{address},#{phone},#{password},#{occupation},#{hobby}
+		,#{realname},#{weixinnum},#{qqnum},#{hotcount},#{birthday},#{height},#{sex}
+		,#{createtime},#{videourl},#{usertype},#{record},#{usersortindex},#{weixinuid}
+		,#{weixinoid},#{signcontent},#{married},#{wage},#{bloodtype},#{selectcondition}
+		,#{otherfunction},#{remark},#{goldbalance})
+	</insert>
+	<update id="resetMatchmakertype" parameterType="yujian.models.Users">
+		update users set matchmakertype=0
+		where matchmakertype=1
+	</update>
+	<update id="update" parameterType="yujian.models.Users">
+		update users set
+		headimgurl=#{headimgurl},address=#{address}
+		,phone=#{phone},password=#{password}
+		,occupation=#{occupation},hobby=#{hobby}
+		,realname=#{realname},weixinnum=#{weixinnum}
+		,qqnum=#{qqnum},hotcount=#{hotcount}
+		,sex=#{sex},birthday=#{birthday}
+		,height=#{height},videourl=#{videourl}
+		,usertype=#{usertype},record=#{record}
+		,goldbalance=#{goldbalance}
+		,usersortindex=#{usersortindex}
+		,signcontent=#{signcontent}
+		,married=#{married}
+		,wage=#{wage}
+		,bloodtype=#{bloodtype}
+		,selectcondition=#{selectcondition}
+		,matchmakerintroduct=#{matchmakerintroduct}
+		,matchmakergoodat=#{matchmakergoodat}
+		,matchmakeradvise=#{matchmakeradvise}
+		,otherfunction=#{otherfunction}
+		,matchmakertype=#{matchmakertype}
+		,remark=#{remark}
+		where userid=#{userid}
+	</update>
+	<delete id="delete">
+		delete from users
+		where userid in
+		<foreach collection="list" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

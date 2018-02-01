@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserCollectionsMapper">
+	<select id="getListByPage" resultType="yujian.models.UserCollectionAndUser">
+	<![CDATA[
+		SELECT uc.*,u.realName,u.headImgUrl,u.birthday FROM usercollections uc
+		LEFT JOIN users u ON uc.userCollectionID=u.userID
+		WHERE uc.userID=#{userid} and realname!=''
+		limit #{skip},#{take}
+	]]>
+	</select>
+
+	<insert id="add" parameterType="yujian.models.UserCollections">
+		insert into usercollections(userid,usercollectionid)
+		values(#{userid},#{usercollectionid})
+	</insert>
+	<delete id="delete">
+		delete from usercollections
+		where userid=#{userid} and usercollectionid=#{usercollectionid}
+	</delete>
+	<delete id="deleteByUserID">
+		delete from usercollections
+		where userid=#{userid}
+	</delete>
+</mapper>

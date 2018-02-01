@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.LeaveWordsMapper">
+	<resultMap type="yujian.models.LeaveWordsAndUser" id="LeaveWordsMap">
+		<id column="leaveWordId" property="leavewordid" />
+		<association property="leavewordsanduser" column="{parentid=leavewordid}" select="getSingleByParentID"></association>
+	</resultMap>
+	<select id="getToListByPage" resultType="yujian.models.LeaveWords">
+		select * from leavewords
+		where touserid=#{touserid}
+		order by leavewordtime desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getLeaveWordsAndUserByPage" resultMap="LeaveWordsMap">
+		select *
+		,(select realname from users where userid=fromuserid) as realname
+		,(select headimgurl from users where userid=fromuserid) as headimgurl
+		,(SELECT realname FROM users WHERE userid=toLeaveWordUserID) AS torealname
+		,(SELECT headimgurl FROM users WHERE userid=toLeaveWordUserID) AS toheadimgurl
+		from leavewords
+		where touserid=#{touserid} and parentid=#{parentid}
+		order by leavewordtime desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getLeaveWordsAndUserByParentId" resultType="yujian.models.LeaveWordsAndUser">
+		select *
+		,(select realname from users where userid=fromuserid) as realname
+		,(select headimgurl from users where userid=fromuserid) as headimgurl
+		,(SELECT realname FROM users WHERE userid=toLeaveWordUserID) AS torealname
+		,(SELECT headimgurl FROM users WHERE userid=toLeaveWordUserID) AS toheadimgurl
+		from leavewords a
+		where parentid=#{parentid}
+		order by leavewordtime asc
+		<if test="skip==null or take==null">
+			limit 0,1
+		</if>
+		<if test="skip!=null and take!=null">
+			limit #{skip},#{take}
+		</if>
+	</select>
+	<select id="getSingleByParentID" resultType="yujian.models.LeaveWordsAndUser">
+		select *
+		,(select realname from users where userid=fromuserid) as realname
+		,(select headimgurl from users where userid=fromuserid) as headimgurl
+		,(SELECT realname FROM users WHERE userid=toLeaveWordUserID) AS torealname
+		,(SELECT headimgurl FROM users WHERE userid=toLeaveWordUserID) AS toheadimgurl
+		from leavewords a
+		where parentid=#{parentid}
+		order by leavewordtime desc
+		limit 0,1
+	</select>
+	<select id="getSingle" resultType="yujian.models.LeaveWordsAndUser">
+		select *
+		,(select realname from users where userid=fromuserid) as realname
+		,(select headimgurl from users where userid=fromuserid) as headimgurl
+		,(SELECT realname FROM users WHERE userid=toLeaveWordUserID) AS torealname
+		,(SELECT headimgurl FROM users WHERE userid=toLeaveWordUserID) AS toheadimgurl
+		from leavewords
+		where leavewordid=#{leavewordid}
+		limit 0,1
+	</select>
+	<insert id="add" parameterType="yujian.models.LeaveWords">
+		insert into leavewords(leavewordid,leavewordurl,fromuserid,touserid,leavewordtime,toleaveworduserid,parentid)
+		values(#{leavewordid},#{leavewordurl},#{fromuserid},#{touserid},#{leavewordtime},#{toleaveworduserid},#{parentid})
+	</insert>
+	<delete id="delete">
+		delete from leavewords
+		where leavewordid =#{leavewordid}
+	</delete>
+	<delete id="deleteByUserID">
+		delete from leavewords
+		where userid =#{userid}
+	</delete>
+</mapper>

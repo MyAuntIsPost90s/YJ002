@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.FeedBacksMapper">
+	<select id="getListByPage" resultType="yujian.models.FeedBacksAndUser">
+		SELECT f.*,u.realName,u.phone FROM feedbacks f
+		LEFT JOIN users u ON f.userID=u.userID
+		WHERE u.userID IS NOT NULL and f.feedbacktype=#{feedbacktype} and f.feedbackstatus=#{feedbackstatus}
+		Order by f.feedbacktime desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getListByIDAndType" resultType="yujian.models.FeedBacksAndUser">
+		SELECT f.*,u.realName,u.phone FROM feedbacks f
+		LEFT JOIN users u ON f.userID=u.userID
+		WHERE u.userID IS NOT NULL and f.feedbacktype=#{feedbacktype} and f.userid=#{userid} and f.feedbackstatus=#{feedbackstatus}
+		Order by f.feedbacktime desc
+	</select>
+	<select id="getSingle" resultType="yujian.models.FeedBacksAndUser">
+		SELECT f.*,u.realName,u.phone FROM feedbacks f
+		LEFT JOIN users u ON f.userID=u.userID
+		WHERE u.userID IS NOT NULL and f.feedbackid=#{feedbackid}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		SELECT count(*) FROM feedbacks f
+		LEFT JOIN users u ON f.userID=u.userID
+		WHERE u.userID IS NOT NULL and f.feedbacktype=#{feedbacktype} and f.feedbackstatus=#{feedbackstatus}
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		select COUNT(*) from feedbacks
+		where feedbackstatus=#{feedbackstatus}
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.FeedBacks">
+		insert into feedbacks(feedbackid,feedbackcontent,feedbacktime,feedbacktype,feedbackstatus,userid,feedbackresult)
+		values(#{feedbackid},#{feedbackcontent},#{feedbacktime},#{feedbacktype},#{feedbackstatus},#{userid},#{feedbackresult})
+	</insert>
+	<update id="update" parameterType="yujian.models.FeedBacks">
+		update feedbacks set
+		feedbacktype=#{feedbacktype}
+		,feedbackcontent=#{feedbackcontent}
+		,feedbackstatus=#{feedbackstatus}
+		,feedbackresult=#{feedbackresult}
+		where feedbackid=#{feedbackid}
+	</update>
+	<delete id="delete">
+		delete from feedbacks
+		where feedbackid in
+		<foreach collection="ids" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

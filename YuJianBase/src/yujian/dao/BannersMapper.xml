@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.BannersMapper">
+	<select id="getList" resultType="yujian.models.Banners">
+		select * from banners
+		where 1=1
+		<if test="bannertype!=null">
+			and bannertype=#{bannertype}
+		</if>
+		<if test="address!=null">
+			and address=#{address}
+		</if>
+	</select>
+	<select id="getSingle" resultType="yujian.models.Banners">
+		select * from  banners
+		where bannerid=#{bannerid}
+		Limit 0,1
+	</select>
+	<select id="getAddress" resultType="java.lang.String">
+		select distinct address from banners
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		select count(*) from banners
+		where 1=1
+		<if test="bannertype!=null">
+			and bannertype=#{bannertype}
+		</if>
+		<if test="address!=null">
+			and address=#{address}
+		</if>
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.Banners">
+		insert into banners(bannerid,bannerimgurl,bannerlink,bannertype,address)
+		values(#{bannerid},#{bannerimgurl},#{bannerlink},#{bannertype},#{address})
+	</insert>
+	<update id="update" parameterType="yujian.models.Banners">
+		update banners set
+		bannerimgurl=#{bannerimgurl}
+		,bannerlink=#{bannerlink}
+		,bannertype=#{bannertype}
+		,address=#{address}
+		where bannerid=#{bannerid}
+	</update>
+	<delete id="delete">
+		delete from banners
+		where bannerid in
+		<foreach collection="list" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

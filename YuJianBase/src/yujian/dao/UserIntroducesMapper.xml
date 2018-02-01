@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserIntroducesMapper">
+	<select id="getListByPage" resultType="yujian.models.UserIntroducesAndUser">
+		SELECT u.address,u.createTime,u.headImgUrl,u.hobby,u.occupation
+		,u.phone,u.qQNum,u.realName,u.weiXinNum,u.userType,u.birthday,u.sex
+		,u.height,u.hotcount,u.videourl,u.record,u.bloodtype,u.wage,u.selectcondition
+		,u.signcontent,u.married
+		,ui.*
+		,iu.realName uirealname 
+		FROM userintroduces ui LEFT JOIN users u ON ui.uIUserID=u.userID
+		LEFT JOIN users iu ON ui.userID=iu.userID
+		where u.userid is not null and iu.userid is not null 
+		<if test="condition!=null and condition!=''">
+			and u.realname like #{condition} or u.phone like #{condition}
+			or u.userid=REPLACE (#{condition}, '%', '')
+		</if>
+		<if test="address!=null and address!=''">
+			and u.address like #{address}
+		</if>
+		<if test="userintroducestatus!=null">
+			and (ui.userintroducestatus = #{userintroducestatus})
+		</if>
+		<if test="userintroducetype!=null">
+			and userintroducetype=#{userintroducetype}
+		</if>
+		<if test="userid!=null">
+			and ui.userid=#{userid}
+		</if>
+		Limit #{skip},#{take}
+	</select>
+	<select id="getSingle" resultType="yujian.models.UserIntroducesAndUser">
+		SELECT u.address,u.createTime,u.headImgUrl,u.hobby,u.occupation
+		,u.phone,u.qQNum,u.realName,u.weiXinNum,u.userType,u.birthday,u.sex
+		,u.height,u.hotcount,u.videourl,u.record,u.bloodtype,u.wage,u.selectcondition
+		,u.signcontent,u.married
+		,ui.*
+		,iu.realName uirealname 
+		FROM userintroduces ui LEFT JOIN users u ON ui.uIUserID=u.userID
+		LEFT JOIN users iu ON ui.userID=iu.userID
+		where iu.userid is not null and ui.uiuserid=#{uiuserid}
+		Limit 0,1
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Long">
+		SELECT count(*)
+		FROM userintroduces ui LEFT JOIN users u ON ui.uIUserID=u.userID
+		where u.userid is not null
+		<if test="condition!=null and condition!=''">
+			and (u.realname like #{condition} or u.phone like #{condition})
+		</if>
+		<if test="address!=null and address!=''">
+			and address like #{address}
+		</if>
+		<if test="userintroducestatus!=null">
+			and (ui.userintroducestatus = #{userintroducestatus})
+		</if>
+		<if test="userintroducetype!=null">
+			and userintroducetype=#{userintroducetype}
+		</if>
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.UserIntroduces">
+		insert into userintroduces(uiuserid,userid,userintroducestatus,userintroducetype)
+		values(#{uiuserid},#{userid},#{userintroducestatus},#{userintroducetype})
+	</insert>
+	<insert id="addMore" parameterType="java.util.List">
+		insert into userintroduces(uiuserid,userid,userintroducestatus,userintroducetype)
+		values
+		<foreach collection="list" item="item" separator=",">
+		(#{item.uiuserid},#{item.userid},#{item.userintroducestatus},#{userintroducetype})
+		</foreach>;
+	</insert>
+	<update id="update" parameterType="yujian.models.UserIntroduces">
+		update userintroduces set
+		userintroducestatus=#{userintroducestatus}
+		where uiuserid=#{uiuserid} and userid=#{userid}
+	</update>
+	<delete id="delete">
+		delete from userintroduces
+		where uiuserid=#{uiuserid} and userid=#{userid}
+	</delete>
+	<delete id="deleteMore" parameterType="java.util.List">
+		delete from userintroduces
+		where uiuserid in(
+			<foreach collection="list" item="item" separator=",">
+				#{item.uiuserid}
+			</foreach>
+		);
+	</delete>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.ExpressionsMapper">
+	<select id="getList" resultType="yujian.models.Expressions">
+		select * from expressions
+		where expressionbagid=#{expressionbagid}
+	</select>
+	<select id="getListByEBIDs" resultType="yujian.models.Expressions">
+		select * from expressions
+		where expressionbagid in(
+		<foreach collection="ids" item="item" separator=",">
+			#{item}
+		</foreach>
+		)
+	</select>
+	<select id="getSingle" resultType="yujian.models.Expressions">
+		select * from expressions
+		where expressionid=#{expressionid}
+		limit 0,1
+	</select>
+	<insert id="add" parameterType="yujian.models.Expressions">
+		insert into expressions(expressionid,expressionurl,expressionbagid)
+		values(#{expressionid},#{expressionurl},#{expressionbagid})
+	</insert>
+	<delete id="delete">
+		delete from expressions
+		where expressionid = #{expressionid}
+	</delete>
+	<delete id="deleteByExpressionBagID">
+		delete from expressions
+		where expressionbagid = #{expressionbagid}
+	</delete>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.SysConfigsMapper">
+	<select id="getSingle" resultType="yujian.models.SysConfigs">
+	<![CDATA[
+		SELECT * FROM sysconfigs
+		WHERE sysConfigID=(SELECT MIN(sysConfigID) FROM sysconfigs)
+		limit 0,1
+	]]>
+	</select>
+
+	<insert id="add" parameterType="yujian.models.SysConfigs">
+		insert into sysconfigs(intervalnum,vipdiscount,photocount,sendgold,sharebackurl)
+		values(#{intervalnum},#{vipdiscount},#{photocount},#{sendgold},#{sharebackurl})
+	</insert>
+	<update id="update" parameterType="yujian.models.SysConfigs">
+		update sysconfigs set
+		intervalnum=#{intervalnum}
+		,vipdiscount=#{vipdiscount}
+		,photocount=#{photocount}
+		,sendgold=#{sendgold}
+		,sharebackurl=#{sharebackurl}
+		,userbgurl=#{userbgurl}
+		where sysconfigid=#{sysconfigid}
+	</update>
+</mapper>

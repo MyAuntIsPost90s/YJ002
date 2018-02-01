@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserExpressionBagsMapper">
+	<select id="getList" resultType="yujian.models.ExpressionBags">
+		SELECT DISTINCT e.*  FROM expressionbags e
+		LEFT JOIN
+		(SELECT * FROM userexpressionbags WHERE userid=#{userid}) ue
+		ON e.expressionBagID=ue.expressionBagID
+		WHERE e.expressionbagisdefault=1
+		OR ue.userid IS NOT NULL
+	</select>
+	<insert id="add" parameterType="yujian.models.ExpressionBags">
+		insert into userexpressionbags(userid,expressionbagid)
+		values(#{userid},#{expressionbagid})
+	</insert>
+</mapper>

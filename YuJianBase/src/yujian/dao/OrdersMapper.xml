@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.OrdersMapper">
+	<select id="getList" resultType="yujian.models.Orders">
+	<![CDATA[
+		select * from orders
+		where orderdate>=#{begin} and orderdate<=#{end} and orderType=#{orderType}
+		ORDER BY orderdate DESC
+		limit #{skip},#{take}
+	]]>
+	</select>
+	<select id="getListByYears" resultType="yujian.models.SimpleOrders">
+	<![CDATA[
+		SELECT * FROM 
+		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y') orderdate FROM orders
+		WHERE orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}
+		GROUP BY DATE_FORMAT(orderdate, '%Y')) temp
+		ORDER BY orderdate ASC
+	]]>
+	</select>
+	<select id="getListByMonths" resultType="yujian.models.SimpleOrders">
+	<![CDATA[
+		SELECT * FROM 
+		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m') orderdate FROM orders 
+		WHERE orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}
+		GROUP BY DATE_FORMAT(orderdate, '%Y-%m')) temp 
+		ORDER BY orderdate ASC
+	]]>
+	</select>
+	<select id="getListByDays" resultType="yujian.models.SimpleOrders">
+	<![CDATA[
+		SELECT * FROM 
+		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m-%d') orderdate FROM orders 
+		WHERE orderType=#{orderType} and orderdate>=STR_TO_DATE(#{begin},'%Y-%m-%d') and orderdate<=STR_TO_DATE(#{end},'%Y-%m-%d')
+		GROUP BY DATE_FORMAT(orderdate, '%Y-%m-%d')) temp 
+		ORDER BY orderdate ASC
+	]]>
+	</select>
+
+	<insert id="add" parameterType="yujian.models.Orders">
+		insert into orders(orderid,ordercost,orderdate,ordertype,userid)
+		values(#{orderid},#{ordercost},#{orderdate},#{ordertype},#{userid})
+	</insert>
+</mapper>

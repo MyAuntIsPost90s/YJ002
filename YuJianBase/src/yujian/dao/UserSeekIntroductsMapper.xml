@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserSeekIntroductsMapper">
+	<select id="getListByPage" resultType="yujian.models.UserSeekIntroductsAndUser">
+		SELECT s.*,fu.headImgUrl fromheadimgurl
+		,fu.realName fromrealname
+		,fu.sex fromsex
+		,tu.headImgUrl toheadimgurl
+		,tu.sex tosex
+		,tu.birthday tobirthday
+		,tu.signcontent tosigncontent
+		,tu.realName torealname FROM userseekintroducts s,users fu,users tu
+		WHERE s.fromUserID=fu.userID AND s.toUserID=tu.userID
+		and s.fromuserid=#{fromuserid} 
+		ORDER BY userSeekIntroductTime DESC
+		limit #{skip},#{take}
+	</select>	
+	
+	<insert id="add" parameterType="yujian.models.UserSeekIntroductsAndUser">
+		insert into userseekintroducts(userseekintroductid,fromuserid,touserid,userseekintroducttime)
+		values(#{userseekintroductid},#{fromuserid},#{touserid},#{userseekintroducttime})
+	</insert>
+
+	<delete id="delete">
+		delete from userseekintroducts
+		where userseekintroductid=#{userseekintroductid}
+	</delete>
+</mapper>

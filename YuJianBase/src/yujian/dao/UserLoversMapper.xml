@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.UserLoversMapper">
+	<select id="getListByPage" resultType="yujian.models.UserLovserAndABUser">
+		SELECT ul.*
+		,au.realName arealname,au.phone aphone
+		,bu.realName brealname,bu.phone bphone FROM userlovers ul
+		LEFT JOIN users au ON ul.aUserID=au.userid
+		LEFT JOIN users bu ON ul.buserid=bu.userid
+		where au.userid is not null and bu.userid is not null
+		<if test="condition!=null and condition!=''">
+			and (au.realname like #{condition} or au.phone like #{condition} or bu.realname like #{condition} or bu.phone like #{condition})
+		</if>
+		ORDER BY ul.userlovedate DESC
+		Limit #{skip},#{take}
+	</select>
+	<select id="getSingle" resultType="yujian.models.UserLovserAndABUser">
+		SELECT ul.*
+		,au.realName arealname,au.phone aphone
+		,bu.realName brealname,bu.phone bphone FROM userlovers ul
+		LEFT JOIN users au ON ul.aUserID=au.userid
+		LEFT JOIN users bu ON ul.buserid=bu.userid
+		where au.userid is not null and bu.userid is not null
+		and ul.auserid=#{auserid} and ul.buserid=#{buserid} or ul.auserid=#{buserid} and ul.buserid=#{auserid}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		SELECT count(*) FROM userlovers ul
+		LEFT JOIN users au ON ul.aUserID=au.userid
+		LEFT JOIN users bu ON ul.buserid=bu.userid
+		where au.userid is not null and bu.userid is not null
+		<if test="condition!=null and condition!=''">
+			and (u.realname like #{condition} or u.phone like #{condition})
+		</if>
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.UserLovers">
+		insert into userlovers(auserid,buserid,lovecost,userlovedate)
+		values(#{auserid},#{buserid},#{lovecost},#{userlovedate})
+	</insert>
+	<update id="update">
+		update userlovers set 
+		lovecost=#{lovecost},userlovedate=#{userlovedate}
+		where auserid=#{auserid} and buserid=#{buserid}
+	</update>
+	<delete id="delete">
+		delete from userlovers
+		where auserid=#{auserid} and buserid=#{buserid}
+	</delete>
+</mapper>

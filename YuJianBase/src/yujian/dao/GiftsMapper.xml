@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.GiftsMapper">
+	<select id="getListByPage" resultType="yujian.models.Gifts">
+		select * from gifts
+		limit #{skip},#{take}
+	</select>
+	<select id="getListByIDs" resultType="yujian.models.Gifts">
+		select * from gifts
+		where giftid in
+		<foreach collection="ids" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getSingle" resultType="yujian.models.Gifts">
+		select * from  gifts
+		where giftid=#{giftid}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		select count(*) from gifts
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.Gifts">
+		insert into gifts(giftid,gifturl,giftcost,gifttitle,giftcontent)
+		values(#{giftid},#{gifturl},#{giftcost},#{gifttitle},giftcontent)
+	</insert>
+	<update id="update" parameterType="yujian.models.Gifts">
+		update gifts set
+		gifturl=#{gifturl}
+		,giftcost=#{giftcost}
+		,gifttitle=#{gifttitle}
+		,giftcontent=#{giftcontent}
+		where giftid=#{giftid}
+	</update>
+	<delete id="delete">
+		delete from gifts
+		where giftid in
+		<foreach collection="list" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

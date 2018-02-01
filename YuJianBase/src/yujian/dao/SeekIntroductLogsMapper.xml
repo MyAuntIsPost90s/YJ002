@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.SeekIntroductLogsMapper">
+	<select id="getList" resultType="yujian.models.SeekIntroductLogsAndUser">
+		SELECT s.*
+		,u.realname realname
+		,fu.realName fromrealname
+		,tu.realName torealname FROM seekintroductlogs s,users fu,users tu,users u
+		WHERE s.fromUserID=fu.userID AND s.toUserID=tu.userID AND s.userid=u.userid
+		<if test="userid!=null">
+			and s.userid=#{userid}
+		</if>
+		<if test="relativeid!=null">
+			and (s.touserid=#{relativeid} or s.fromuserid=#{relativeid})
+		</if>
+		ORDER BY seekintroducttime DESC
+		limit #{skip},#{take}
+	</select>
+	<select id="getSingle" resultType="yujian.models.SeekIntroductLogsAndUser">
+		SELECT s.*
+		,u.realname realname
+		,fu.realName fromrealname
+		,(SELECT COUNT(*) FROM seekintroductlogs WHERE userID=s.userID) count
+		,(SELECT COUNT(*) FROM seekintroductlogs WHERE fromUserID=s.fromUserID) fromcount
+		,tu.realName torealname
+		,(SELECT COUNT(*) FROM seekintroductlogs WHERE toUserID=s.toUserID) tocount
+		FROM seekintroductlogs s,users fu,users tu,users u
+		WHERE s.fromUserID=fu.userID AND s.toUserID=tu.userID AND s.userid=u.userid
+		and s.seekintroductlogid=#{seekintroductlogid}
+		limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT Count(*) FROM seekintroductlogs
+		where 1=1
+		<if test="userid!=null">
+			and userid=#{userid}
+		</if>
+		<if test="relativeid!=null">
+			and (touserid=#{relativeid} or fromuserid=#{relativeid})
+		</if>
+	</select>
+	<insert id="add" parameterType="yujian.models.SeekIntroductLogs">
+		insert into seekintroductlogs(seekintroductlogid,seekintroducttime,touserid,fromuserid,userid)
+		values(#{seekintroductlogid},#{seekintroducttime},#{touserid},#{fromuserid},#{userid})
+	</insert>
+	<update id="update">
+		update seekintroductlogs 
+		set seekintroducttime=#{seekintroducttime}
+		,touserid=#{touserid}
+		,fromuserid=#{fromuserid}
+		,userid=#{userid}
+		where seekintroductlogid=#{seekintroductlogid}
+	</update>
+	<delete id="delete">
+		delete from seekintroductlogs where seekintroductlogid in
+		<foreach collection="ids" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

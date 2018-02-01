@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.SeekIntroductsMapper">
+	<select id="getList" resultType="yujian.models.SeekIntroductAndUser">
+		SELECT s.*,fu.headImgUrl fromheadimgurl
+		,fu.realName fromrealname
+		,fu.sex fromsex
+		,tu.headImgUrl toheadimgurl
+		,tu.sex tosex
+		,tu.realName torealname FROM seekintroducts s,users fu,users tu
+		WHERE s.fromUserID=fu.userID AND s.toUserID=tu.userID
+		and s.userID=#{userid} and seekintroducttype=0
+		<if test="seekintroductstatus!=null">
+			and s.seekintroductstatus=#{seekintroductstatus}
+		</if>
+		ORDER BY seekintroducttime DESC
+		limit #{skip},#{take}
+	</select>
+	<select id="getSingleSeekList" resultType="yujian.models.SeekIntroductAndUser">
+		SELECT s.*,fu.headImgUrl fromheadimgurl
+		,fu.realName fromrealname
+		,fu.sex fromsex
+		FROM seekintroducts s,users fu
+		WHERE s.fromUserID=fu.userID and seekintroducttype=1
+		and s.userID=#{userid}
+		<if test="seekintroductstatus!=null">
+			and s.seekintroductstatus=#{seekintroductstatus}
+		</if>
+		ORDER BY seekintroducttime DESC
+		limit #{skip},#{take}
+	</select>
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT Count(*) FROM seekintroducts
+		WHERE userID=#{userid}
+		<if test="seekintroductstatus!=null">
+			and seekintroductstatus=#{seekintroductstatus}
+		</if>
+	</select>
+	<insert id="add" parameterType="yujian.models.SeekIntroductAndUser">
+		insert into seekintroducts(seekintroductid,seekintroducttime,touserid,fromuserid,userid,seekintroducttype)
+		values(#{seekintroductid},#{seekintroducttime},#{touserid},#{fromuserid},#{userid},#{seekintroducttype})
+	</insert>
+	<select id="getSingle" resultType="yujian.models.SeekIntroductAndUser">
+		SELECT s.*,fu.headImgUrl fromheadimgurl
+		,fu.realName fromrealname
+		,tu.headImgUrl toheadimgurl
+		,tu.realName torealname FROM seekintroducts s,users fu,users tu
+		WHERE s.fromUserID=fu.userID AND s.toUserID=tu.userID
+		and s.touserID=#{touserid} and s.fromuserID=#{fromuserid}
+		<if test="seekintroductstatus!=null">
+			and s.seekintroductstatus=#{seekintroductstatus}
+		</if>
+		ORDER BY seekintroducttime DESC
+		limit 0,1
+	</select>
+	<update id="updateStatus">
+		update seekintroducts set seekintroductstatus=#{seekintroductstatus}
+		where userid=#{userid}
+	</update>
+	<delete id="delete">
+		delete from seekintroducts where seekintroductid=#{seekintroductid}
+	</delete>
+</mapper>

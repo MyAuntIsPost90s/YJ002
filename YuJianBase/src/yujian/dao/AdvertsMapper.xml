@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="yujian.dao.AdvertsMapper">
+	<select id="getListByPage" resultType="yujian.models.Adverts">
+		select * from adverts
+		order by advertSortIndex desc
+		limit #{skip},#{take}
+	</select>
+	<select id="getSingle" resultType="yujian.models.Adverts">
+		select * from  adverts
+		where advertID=#{advertid}
+		Limit 0,1
+	</select>
+	<select id="getCount" resultType="java.lang.Long">
+		select count(*) from adverts
+	</select>
+	
+	<insert id="add" parameterType="yujian.models.Adverts">
+		insert into adverts(advertid,advertimgurl,advertlink,adverttitle,advertlogourl,advertcontent,advertsortindex)
+		values(#{advertid},#{advertimgurl},#{advertlink},#{adverttitle},#{advertlogourl},#{advertcontent},#{advertsortindex})
+	</insert>
+	<update id="update" parameterType="yujian.models.Adverts">
+		update adverts set
+		advertimgurl=#{advertimgurl}
+		,advertlink=#{advertlink}
+		,adverttitle=#{adverttitle}
+		,advertlogourl=#{advertlogourl}
+		,advertcontent=#{advertcontent}
+		,advertsortindex=#{advertsortindex}
+		where advertid=#{advertid}
+	</update>
+	<delete id="delete">
+		delete from adverts
+		where advertid in
+		<foreach collection="list" open="(" close=")" item="id" separator="," >
+			#{id}
+		</foreach>
+	</delete>
+</mapper>
