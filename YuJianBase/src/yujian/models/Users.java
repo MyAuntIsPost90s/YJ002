@@ -51,7 +51,7 @@ public class Users {
     /** 热度 */
     private Integer hotcount;
     
-    /** -1红人用户 0普通用户 1VIP 2管理员 */
+    /** -1红人用户 0普通用户 1VIP 2管理员  4超级管理员*/
     private Integer usertype;
     
     /** 金币数 */

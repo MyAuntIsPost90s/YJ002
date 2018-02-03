@@ -68,7 +68,8 @@ public class LoginController {
 		RespJson respJson = new RespJson();
 		try {
 			Users user = userService.getSingleByPhone(phone);
-			if (user == null || user.getUsertype() != UserType.ADMIN) {
+			System.out.print(user == null || (user.getUsertype() != UserType.ADMIN && user.getUsertype() != UserType.ROOT));
+			if (user == null || (user.getUsertype() != UserType.ADMIN && user.getUsertype() != UserType.ROOT)) {
 				respJson.setStatus(ResultStatus.USERDEFINED);
 				respJson.setMsg("该用户不存在");
 				return respJson;

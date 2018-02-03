@@ -119,6 +119,26 @@ public class UsersController {
 			return null;
 		}
 	}
+	
+	/**
+	 * 获取当前用户
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/GetNowUser", method = RequestMethod.GET)
+	public Users getNowUser(HttpServletRequest request){
+		try{
+			Users users=(Users)request.getSession().getAttribute(Skin.USER);
+			users = userService.getSingleByUserID(users.getUserid());
+			request.getSession().setAttribute(Skin.USER, users);
+			
+			return users;
+		}catch (Exception e) {
+			Logger.getRootLogger().error(e);
+			return null;
+		}
+	}
 
 	/**
 	 * 添加
@@ -167,6 +187,32 @@ public class UsersController {
 			return "添加成功";
 		} catch (Exception e) {
 			return "添加失败";
+		}
+	}
+
+	/**
+	 * 克隆账号
+	 * 
+	 * @param users
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/CloneUser", method = RequestMethod.POST)
+	public String cloneUser(Users users) {
+		try {
+			// 判断重复
+			Users temp = userService.getSingleByPhone(users.getPhone());
+			if (temp != null)
+				return "该手机号已经存在";
+			users.setBirthday(new Date());
+			users.setUsertype(UserType.ADMIN);
+			users.setHeadimgurl("/YuJianRoom/Contents/UploadFile/HeadImgs/dfthead.png");
+			userService.add(users);
+
+			return "操作成功";
+		} catch (Exception e) {
+			Logger.getRootLogger().error(e);
+			return "操作失败";
 		}
 	}
 
@@ -287,7 +333,7 @@ public class UsersController {
 			return respJson;
 		}
 	}
-
+	
 	/**
 	 * 修改密码
 	 * 

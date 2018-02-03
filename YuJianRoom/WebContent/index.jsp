@@ -22,6 +22,7 @@
 	<script src="/YuJianRoom/Contents/js/md5.js" type="text/javascript" ></script>
 	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.0" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/ajaxFileUpload.js?a=1.5"></script>
 	<style>
     .theme-header-layout{
         height: 46px !important;
@@ -98,12 +99,13 @@
                     <div class="theme-left-user-panel">
                         <dl>
                             <dt>
-                                <img src="<%=user.getHeadimgurl()%>" width="43" height="43">
+                                <img id="menu-userheadimg" src="<%=user.getHeadimgurl()%>" width="43" height="43" onclick="$('#menu-img-file').click()" />
+                                <input type="file" name="file" id="menu-img-file" style="display: none;" onchange="MenuUserImgUpload()" />
                             </dt>
                             <dd>
                                 <b class="badge-prompt"><%=user.getRealname() %></b>
-                                <span>admin</span>
-                                <p>权限等级：<i class="text-success">管理员</i></p>
+                                <span><%=user.getPhone() %></span>
+                                <p>权限等级：<i class="text-success"><%=user.getUsertype()==4?"超级管理员":"管理员" %></i></p>
                             </dd>
 
                         </dl>
@@ -156,6 +158,7 @@
                         
                         <div title="系统管理">
                         	<ul class="easyui-datalist" data-options="border:false,fit:true">
+                        		<li><span data-href="/YuJianRoom/Pages/Mine.html" >个人中心</span></li>
                                 <li><span data-href="/YuJianRoom/Pages/SysSet.html" >系统设置</span></li>
                             </ul>
                         </div>
@@ -300,6 +303,29 @@
     					$('#item-askmatchmaker').after('<i class="badgecount feedbackcount badge color-important">'+data.askmatchmaker+'</i>');
     				}
     			},'json');
+    }
+    
+    //上传头像
+    function MenuUserImgUpload(){
+    	$.ajaxFileUpload({
+			url: '/YuJianRoom/Common/UploadUserHeadImgs?userid=<%=user.getUserid() %>&pwd=<%=user.getPassword() %>',
+            type: 'post',
+            secureuri: false,
+            fileElementId: "menu-img-file",
+            dataType: 'json',
+            success: function (data){  //服务器成功响应处理函数  
+				if(data!=null){
+					$('#menu-userheadimg').attr('src',data.headimgurl);
+					$.get('/YuJianRoom/Users/GetNowUser'); //刷新session
+				}
+            },
+            error: function (data, status, e){//服务器响应失败处理函数
+            	if(data.status==1){
+					$('.upload-img-board').append('<img onclick="ImgClick(this)" data-id="'+data.jsonData.userimgid+'" src="'+data.jsonData.userimgurl+'" />');
+				}
+				$.messager.alert("提示",data.msg);
+            }
+		});
     }
 </script>
 </html>

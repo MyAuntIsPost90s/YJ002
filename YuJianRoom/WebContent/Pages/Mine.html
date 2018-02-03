@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<script src="/YuJianRoom/Contents/js/jquery.min.js" type="text/javascript" ></script>
+
+    <link href="/YuJianRoom/Contents/lib/easyui-theme/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+    <link href="/YuJianRoom/Contents/lib/easyui-theme/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+    <link href="/YuJianRoom/Contents/lib/easyui-theme/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="/YuJianRoom/Contents/lib/easyui-theme/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/YuJianRoom/Contents/lib/easyui-theme/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/YuJianRoom/Contents/lib/easyui-theme/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/YuJianRoom/Contents/lib/easyui-theme/themes/insdep/jquery.insdep-extend.min.js"></script>
+	
+	<script src="/YuJianRoom/Contents/js/md5.js" type="text/javascript" ></script>
+	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.0" type="text/javascript"></script>
+</head>
+<body>
+	<div class="easyui-layout" data-options='fit:"true"'>
+		<div title="我的信息" data-options='region:"north",collapsible:false' style="height: 200px;padding: 5px" >
+			<form id="me-form" method="post" enctype="multipart/form-data">
+				<input name="userid" type="hidden" />
+				<input name="password" type="hidden" />
+				<input name="address" type="hidden" />
+				<input name="usertype" type="hidden" />
+				<input name="headimgurl" type="hidden" />
+				<table>
+					<tr>
+						<td>用户名:</td>
+						<td>
+							<input style="width: 180px" readonly="readonly" class="easyui-textbox" type="text" name="phone" data-options="validType:'length[1,30]'" />
+							<button type="button" id="btn-clone" onclick="ShowClone()" class="easyui-linkbutton">克隆</button>
+						</td>
+					</tr>
+					<tr>
+						<td>真实姓名:</td>
+						<td><input style="width: 180px" class="easyui-textbox" type="text" name="realname" data-options="validType:'length[1,30]'" /></td>
+					</tr>
+					<tr>
+						<td>权限:</td>
+						<td><span id="power"></span></td>
+					</tr>
+				</table>
+			</form>
+			<div class="font-grey">tips：直接点击头像即可修改哦~</div>
+			<div>  
+				<button type="button" onclick="UpdateMe()" data-options='iconCls:"icon-ok"' class="easyui-linkbutton">
+				保存
+        		</button>
+        	</div>
+		</div>
+		<div id="div-table" data-options='region:"center"'>
+			<table id="table-user" title="管理员列表" style="width:100%;height:100%"
+		           data-options='fit:"true"
+		           ,fitColumns:"true"
+				   ,rownumbers:"true"
+		           ,pagination:"true"'>
+        		<thead>
+        			<tr>
+	        			<th data-options="field:'userid',width:50,align:'center'">账号编号</th>
+	        			<th data-options="field:'phone',width:100,align:'center'">用户名</th>
+	                	<th data-options="field:'realname',width:100,align:'center'">姓名</th>
+	                	<th data-options="field:'address',width:100,align:'center'">地址</th>
+	                	<th data-options="field:'phone',width:100,align:'center'">手机号</th>
+                	</tr>
+        		</thead>
+			</table>
+		</div>
+	</div>
+	
+	<!-- 克隆框 -->
+	<div id="clone-dialog" class="easyui-dialog"
+		style="width: 280px; height: 250px"
+		data-options="title:'管理员克隆',modal:true,closed:true,buttons:'#btns-clone'">
+		<div style="padding: 10px;">
+			<form id="clone-form" action="" method="post"
+				enctype="multipart/form-data">
+				<input id="clone-userid" name="userid" type="hidden"/>
+				<input name="password" type="hidden" />
+				<input name="usertype" type="hidden" />
+				<input name="headimgurl" type="hidden" />
+				<table>
+					<tr>
+						<td>姓名:</td>
+						<td><input style="width: 180px" class="easyui-textbox" type="text" name="realname" data-options="required:true,validType:'length[1,30]'" /></td>
+					</tr>
+					<tr>
+						<td>手机号:</td>
+						<td><input id="clone-phone" style="width: 180px" class="easyui-textbox" type="text" name="phone" data-options="required:true,validType:'length[1,30]'" /></td>
+					</tr>
+					<tr>
+						<td>地区权限：</td>
+						<td>
+							<select id="clone-province" name="address" style="width: 170px;" data-options="required:true,editable:false
+								,panelHeight:'200px'
+								,textField:'text'
+								,valueField:'id'" style="width:100px">
+	                        </select>省
+						</td>
+					</tr>
+				</table>
+			</form>
+			<p class="font-grey">tips:克隆的管理员默认密码：123</p>
+		</div>
+	</div>
+	<div id="btns-clone">
+        <button type="button" onclick="Clone()" data-options='iconCls:"icon-ok"' class="easyui-linkbutton">
+		保存
+        </button>
+        <a onclick="$('#clone-dialog').dialog('close')" data-options='iconCls:"icon-cancel"' class="easyui-linkbutton">
+		关闭
+        </a>
+    </div>
+    
+    <script type="text/javascript">
+	var user=null;
+	$(function(){
+		$.ajaxSetup({async : false });
+		LoadMe();
+		if(user==null||user.usertype!=4){
+			$('#div-table').remove();
+			$('#btn-clone').hide();
+		}else{
+			LoadData();
+		}
+		$.ajaxSetup({async : true });
+		LoadProvince();
+	});
+	
+	//修改个人信息
+	function UpdateMe(){
+		$('#me-form').form({
+			url:'/YuJianRoom/Users/Update',
+			onSubmit:function(){
+				return $(this).form('validate')
+			},
+			success: function(data){
+				$.messager.alert('提示',data);
+				$('#clone-dialog').dialog('close');
+			}
+		});
+		$('#me-form').submit();
+	}
+	
+	//账号克隆
+	function Clone(){
+		var url='/YuJianRoom/Users/Update';
+		if($('#clone-userid').val()==''){
+			url='/YuJianRoom/Users/CloneUser';
+		}
+		$('#clone-form').form({
+			url:url,
+			onSubmit:function(){
+				return $(this).form('validate')
+			},
+			success: function(data){
+				$.messager.alert('提示',data);
+				$('#clone-dialog').dialog('close');
+				$('#table-user').datagrid('reload');
+			}
+		});
+		$('#clone-form').submit();
+	}
+	
+	//克隆账号
+	function ShowClone(){
+		$('#clone-phone').textbox({readonly:false});
+		$('#clone-form').form('clear');
+		$('#clone-form').form({password:hex_md5("123").toUpperCase(),})
+		$('#clone-dialog').dialog('open');
+	}
+	
+	//加载省份
+	function LoadProvince(){
+		$('#clone-province').combobox();
+       	var arrs=[];
+       	for(var i=0;i<LAreaData.length;i++){
+       		arrs.push({ id:LAreaData[i].name,text:LAreaData[i].name });
+       	}
+       	
+        $('#clone-province').combobox('loadData',arrs);
+    }
+	
+	//加载个人信息
+	function LoadMe(){
+		$('#me-form').form({
+			onLoadSuccess:function(data){
+				user=data;
+				if(data.usertype==4){
+					$('#power').html('超级管理员');
+					return;
+				}
+				$('#power').html(data.address+"管理员");
+			}
+		});
+		$('#me-form').form('load','/YuJianRoom/Users/GetNowUser');
+	}
+	
+	//加载数据
+	function LoadData() {
+	    var pager;
+	    pager = $('#table-user').datagrid({ 
+	    	url: '/YuJianRoom/Users/GetList?usertype=2',
+	    	onDblClickRow: function (index, row) {
+       			$('#table-user').datagrid('unselectAll');
+       			$('#table-user').datagrid('selectRow',index);
+       			EditClick();
+            }
+	   }).datagrid('getPager');
+	  
+	   pager.pagination({
+	        showPageList: true,
+	        buttons: [{
+	            iconCls: 'icon-add',
+	            handler: function () {
+	                AddClick();	//添加-处理
+	            }
+	        }, {
+	            iconCls: 'icon-edit',
+	            handler: function (e) {
+	            	EditClick();
+	            }
+	        }, {
+	            iconCls: 'icon-remove',
+	            handler: function () {
+	            	DelClick();//删除-处理  
+	            }
+	        }],
+	        onBeforeRefresh: function () {
+	            return true;
+	        }
+	    });
+	}
+	
+	//修改
+	function EditClick(){
+		var rows = $('#table-user').datagrid('getSelections');
+        if (rows.length != 1) {
+            $.messager.alert('提示', '请选中一个选项', 'info');
+            return;
+        }
+
+        //加载数据
+        $('#clone-phone').textbox({readonly:true});
+        $('#clone-form').form('clear');
+        $('#clone-form').form('load', '/YuJianRoom/Users/GetSingle?id=' + rows[0].userid);
+		$('#clone-dialog').dialog('open');
+	}
+	
+	//点击删除
+	function DelClick(){
+     	var rows = $('#table-user').datagrid('getSelections');
+         if (rows.length < 1) {
+             $.messager.alert('提示', '请至少选中一个选项', 'info');
+             return;
+         }
+         var ids = '';
+         for (var i = 0; i < rows.length; i++) {
+             ids += rows[i].userid + ","
+         }
+         ids = ids.substring(0, ids.length - 1);
+
+         $.messager.confirm('系统提示', '您确定要删除编号为' + ids + '的数据吗?', function (r) {
+             if (r) {
+                 $.post('/YuJianRoom/Users/Del'
+                     , { ids: ids }
+                     , function (data) {
+                         $.messager.alert('提示', data, 'info');
+                         $('#table-user').datagrid('reload');
+                     }, 'text');
+             }
+         });
+     }
+</script>
+</body>
+</html>

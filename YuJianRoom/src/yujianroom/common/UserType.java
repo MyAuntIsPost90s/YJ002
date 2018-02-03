@@ -6,4 +6,5 @@ public class UserType {
 	public static final int VIP=1;	//VIP
 	public static final int ADMIN=2;	//系统管理员
 	public static final int MATCHMAKER=3;	//媒婆
+	public static final int ROOT=4;	//超级管理员
 }

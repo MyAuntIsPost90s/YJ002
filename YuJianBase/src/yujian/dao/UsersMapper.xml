@@ -75,7 +75,7 @@
 			and otherfunction=#{otherfunction}
 		</if>
 		<if test="usertype==null">
-			and usertype>-1
+			and usertype between -1 and 2
 		</if>
 		<if test="usertype!=null">
 			and usertype=#{usertype}
@@ -188,7 +188,7 @@
 			and otherfunction=#{otherfunction}
 		</if>
 		<if test="usertype==null">
-			and usertype>-1
+			and usertype between -1 and 2
 		</if>
 		<if test="usertype!=null">
 			and usertype=#{usertype}

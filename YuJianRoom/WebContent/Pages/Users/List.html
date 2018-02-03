@@ -237,7 +237,6 @@
                         <select name="usertype" class="easyui-combobox" data-options="required:true,editable:false,panelHeight:'auto'" style="width:80px">
                             <option value="0">普通</option>
                             <option value="1">会员</option>
-                            <option value="2">管理员</option>
                         </select>
                     </td>
                     <td></td>
@@ -351,7 +350,7 @@
         </div>
      </div>
     
-     <!-- 添加菜单 -->
+    <!-- 添加菜单 -->
     <div id="mm" class="easyui-menu" style="width:150px;">
         <div id="mm-base" onclick="EditClick()">编辑基本信息</div>
         <div id="mm-imgand" onclick="ImgEditClick()" >编辑图片视频</div>
@@ -469,7 +468,7 @@
             $('#password').textbox({readonly:false});
         	$('#ff').form('clear');
             $('#ff').form('load', {
-            	usertype: 2,
+            	usertype: 0,
                 sex: 1,
                 userid:0,
                 hotcount:0,
