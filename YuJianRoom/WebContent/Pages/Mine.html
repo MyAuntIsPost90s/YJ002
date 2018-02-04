@@ -168,7 +168,7 @@
 	function ShowClone(){
 		$('#clone-phone').textbox({readonly:false});
 		$('#clone-form').form('clear');
-		$('#clone-form').form({password:hex_md5("123").toUpperCase(),})
+		$('#clone-form').form('load',{password:hex_md5("123").toUpperCase()})
 		$('#clone-dialog').dialog('open');
 	}
 	
@@ -213,11 +213,6 @@
 	   pager.pagination({
 	        showPageList: true,
 	        buttons: [{
-	            iconCls: 'icon-add',
-	            handler: function () {
-	                AddClick();	//添加-处理
-	            }
-	        }, {
 	            iconCls: 'icon-edit',
 	            handler: function (e) {
 	            	EditClick();

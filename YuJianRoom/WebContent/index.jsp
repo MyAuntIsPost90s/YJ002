@@ -100,7 +100,7 @@
                     <div class="theme-left-user-panel">
                         <dl>
                             <dt>
-                                <img id="menu-userheadimg" src="<%=user.getHeadimgurl()%>" width="43" height="43" onclick="$('#menu-img-file').click()" />
+                                <img id="menu-userheadimg" src="<%=user.getHeadimgurl().isEmpty()?"/YuJianRoom/Contents/UploadFile/HeadImgs/dfthead.png":user.getHeadimgurl()%>" width="43" height="43" onclick="$('#menu-img-file').click()" />
                                 <input type="file" name="file" id="menu-img-file" style="display: none;" onchange="MenuUserImgUpload()" />
                             </dt>
                             <dd>

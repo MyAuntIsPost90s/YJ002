@@ -226,7 +226,7 @@ public class UsersController {
 				return "该手机号已经存在";
 			users.setBirthday(new Date());
 			users.setUsertype(UserType.ADMIN);
-			users.setHeadimgurl("/YuJianRoom/Contents/UploadFile/HeadImgs/dfthead.png");
+			users.setHeadimgurl("");
 			userService.add(users);
 
 			return "操作成功";
