@@ -4,41 +4,53 @@
 
 <mapper namespace="yujian.dao.OrdersMapper">
 	<select id="getList" resultType="yujian.models.Orders">
-	<![CDATA[
-		select * from orders
-		where orderdate>=#{begin} and orderdate<=#{end} and orderType=#{orderType}
+		SELECT orders.* FROM orders
+		LEFT JOIN users ON orders.userid=users.userid
+		where 
+		<![CDATA[ orderdate>=#{begin} and orderdate<=#{end} and orderType=#{orderType}	]]>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 		ORDER BY orderdate DESC
 		limit #{skip},#{take}
-	]]>
 	</select>
 	<select id="getListByYears" resultType="yujian.models.SimpleOrders">
-	<![CDATA[
 		SELECT * FROM 
 		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y') orderdate FROM orders
-		WHERE orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}
+		LEFT JOIN users ON orders.userid=users.userid
+		WHERE
+		<![CDATA[orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}	]]>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 		GROUP BY DATE_FORMAT(orderdate, '%Y')) temp
 		ORDER BY orderdate ASC
-	]]>
 	</select>
 	<select id="getListByMonths" resultType="yujian.models.SimpleOrders">
-	<![CDATA[
 		SELECT * FROM 
-		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m') orderdate FROM orders 
-		WHERE orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}
+		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m') orderdate FROM orders
+		LEFT JOIN users ON orders.userid=users.userid
+		WHERE
+		<![CDATA[orderType=#{orderType} and orderdate>=#{begin} and orderdate<=#{end}	]]>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 		GROUP BY DATE_FORMAT(orderdate, '%Y-%m')) temp 
 		ORDER BY orderdate ASC
-	]]>
 	</select>
 	<select id="getListByDays" resultType="yujian.models.SimpleOrders">
-	<![CDATA[
 		SELECT * FROM 
-		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m-%d') orderdate FROM orders 
-		WHERE orderType=#{orderType} and orderdate>=STR_TO_DATE(#{begin},'%Y-%m-%d') and orderdate<=STR_TO_DATE(#{end},'%Y-%m-%d')
+		(SELECT SUM(ordercost) ordercost,DATE_FORMAT(orderdate, '%Y-%m-%d') orderdate FROM orders
+		LEFT JOIN users ON orders.userid=users.userid 
+		WHERE
+		<![CDATA[orderType=#{orderType} and orderdate>=STR_TO_DATE(#{begin},'%Y-%m-%d') and orderdate<=STR_TO_DATE(#{end},'%Y-%m-%d')	]]>
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 		GROUP BY DATE_FORMAT(orderdate, '%Y-%m-%d')) temp 
 		ORDER BY orderdate ASC
-	]]>
 	</select>
-
+	
 	<insert id="add" parameterType="yujian.models.Orders">
 		insert into orders(orderid,ordercost,orderdate,ordertype,userid)
 		values(#{orderid},#{ordercost},#{orderdate},#{ordertype},#{userid})

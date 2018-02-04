@@ -69,9 +69,9 @@ public class OrdersController {
 	@ResponseBody
 	@RequestMapping(value = "GetOrdersByYears", method = RequestMethod.POST)
 	public List<SimpleOrders> getOrdersByYears(@DateTimeFormat(pattern = "yyyy") Date begin,
-			@DateTimeFormat(pattern = "yyyy") Date end, int ordertype) {
+			@DateTimeFormat(pattern = "yyyy") Date end, int ordertype,String address) {
 		try {
-			return ordersService.getListByYears(begin, end, ordertype);
+			return ordersService.getListByYears(address,begin, end, ordertype);
 		} catch (Exception e) {
 			return null;
 		}
@@ -88,9 +88,9 @@ public class OrdersController {
 	@ResponseBody
 	@RequestMapping(value = "GetOrdersByMonths", method = RequestMethod.POST)
 	public List<SimpleOrders> getOrdersByMonths(@DateTimeFormat(pattern = "yyyy-MM") Date begin,
-			@DateTimeFormat(pattern = "yyyy-MM") Date end, int ordertype) {
+			@DateTimeFormat(pattern = "yyyy-MM") Date end, int ordertype,String address) {
 		try {
-			return ordersService.getListByMonths(begin, end, ordertype);
+			return ordersService.getListByMonths(address,begin, end, ordertype);
 		} catch (Exception e) {
 			return null;
 		}
@@ -107,9 +107,9 @@ public class OrdersController {
 	@ResponseBody
 	@RequestMapping(value = "GetOrdersByDays", method = RequestMethod.POST)
 	public List<SimpleOrders> getOrdersByDays(@DateTimeFormat(pattern = "yyyy-MM-dd") Date begin,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date end, int ordertype) {
+			@DateTimeFormat(pattern = "yyyy-MM-dd") Date end, int ordertype,String address) {
 		try {
-			return ordersService.getListByDays(begin, end, ordertype);
+			return ordersService.getListByDays(address,begin, end, ordertype);
 		} catch (Exception e) {
 			return null;
 		}

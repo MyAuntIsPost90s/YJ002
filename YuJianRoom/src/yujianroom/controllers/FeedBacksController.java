@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import yujian.service.UsersService;
 import yujianroom.common.FeedBackStatus;
 import yujianroom.common.OtherFunction;
 import yujianroom.common.ResultEasyUIList;
+import yujianroom.common.Skin;
+import yujianroom.common.UserType;
 
 @Controller
 @RequestMapping(value = "FeedBacks", produces = "application/json;charset=utf-8")
@@ -37,11 +41,14 @@ public class FeedBacksController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "GetList", method = RequestMethod.POST)
-	public ResultEasyUIList<FeedBacksAndUser> getList(int page, int rows, int feedbacktype, int feedbackstatus) {
+	public ResultEasyUIList<FeedBacksAndUser> getList(int page, int rows, int feedbacktype, int feedbackstatus
+			,String address) {
 		ResultEasyUIList<FeedBacksAndUser> result = new ResultEasyUIList<FeedBacksAndUser>();
 		try {
-			List<FeedBacksAndUser> list = feedBacksService.getListByPage(page, rows, feedbacktype, feedbackstatus);
-			long total = feedBacksService.getCount(feedbacktype, feedbackstatus);
+			if(address==null||address.isEmpty())
+				address=null;
+			List<FeedBacksAndUser> list = feedBacksService.getListByPage(page, rows, feedbacktype, feedbackstatus,address);
+			long total = feedBacksService.getCount(address,feedbacktype, feedbackstatus);
 			result.setRows(list);
 			result.setTotal(total);
 		} catch (Exception e) {
@@ -58,13 +65,18 @@ public class FeedBacksController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "GetUnDoCount", method = RequestMethod.POST)
-	public Map<String, Long> getUnDoCount() {
+	public Map<String, Long> getUnDoCount(HttpServletRequest request) {
 		try {
-			long confession = feedBacksService.getCount(0, 0);// 获取告白数量
-			long propose = feedBacksService.getCount(1, 0);// 获取求婚数量
-			long other = feedBacksService.getCount(2, 0);// 获取其他数量
-			long feedback = feedBacksService.getCount(3, 0);// 获取系统反馈数量
-			long askmatchmaker = feedBacksService.getCount(4, 0);// 获取申请红娘数量
+			String address=null;
+			Users users =(Users)request.getSession().getAttribute(Skin.USER);
+			if(users.getUsertype()!=UserType.ROOT){
+				address=users.getAddress();
+			}
+			long confession = feedBacksService.getCount(address,0, 0);// 获取告白数量
+			long propose = feedBacksService.getCount(address,1, 0);// 获取求婚数量
+			long other = feedBacksService.getCount(address,2, 0);// 获取其他数量
+			long feedback = feedBacksService.getCount(address,3, 0);// 获取系统反馈数量
+			long askmatchmaker = feedBacksService.getCount(address,4, 0);// 获取申请红娘数量
 
 			Map<String, Long> map = new HashMap<>();
 			map.put("confession", confession);

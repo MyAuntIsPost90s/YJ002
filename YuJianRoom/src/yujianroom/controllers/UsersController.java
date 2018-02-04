@@ -80,10 +80,18 @@ public class UsersController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/GetUserAddress", method = RequestMethod.GET)
-	public List<EUIComboBoxData> getUserAddress(Integer usertype) {
+	public List<EUIComboBoxData> getUserAddress(HttpServletRequest request, Integer usertype) {
 		try {
+			Users user = (Users) request.getSession().getAttribute(Skin.USER);
 			List<EUIComboBoxData> list = new ArrayList<>();
 			EUIComboBoxData first = new EUIComboBoxData();
+			// 当不是超级管理员时，只有自己的地区
+			if (user.getUsertype() != UserType.ROOT) {
+				first.setId(user.getAddress());
+				first.setText(user.getAddress());
+				list.add(first);
+				return list;
+			}
 			first.setId("");
 			first.setText("全部");
 			list.add(first);
@@ -111,30 +119,42 @@ public class UsersController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/GetSingle", method = RequestMethod.GET)
-	public Users getSingle(long id) {
+	public Users getSingle(HttpServletRequest request,long id) {
 		try {
+			Users users = (Users)request.getSession().getAttribute(Skin.USER);
 			Users model = userService.getSingleByUserID(id);
+			if(users.getUsertype()!=UserType.ROOT&&!model.getAddress().contains(users.getAddress())){
+				model.setHeight("权限不足");
+				model.setBloodtype("权限不足");
+				model.setHobby("权限不足");
+				model.setOccupation("权限不足");
+				model.setRecord("权限不足");
+				model.setMarried(-1);
+				model.setSigncontent("权限不足");
+				model.setAddress("权限不足");
+			}
 			return model;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 获取当前用户
+	 * 
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/GetNowUser", method = RequestMethod.GET)
-	public Users getNowUser(HttpServletRequest request){
-		try{
-			Users users=(Users)request.getSession().getAttribute(Skin.USER);
+	public Users getNowUser(HttpServletRequest request) {
+		try {
+			Users users = (Users) request.getSession().getAttribute(Skin.USER);
 			users = userService.getSingleByUserID(users.getUserid());
 			request.getSession().setAttribute(Skin.USER, users);
-			
+
 			return users;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			Logger.getRootLogger().error(e);
 			return null;
 		}
@@ -333,7 +353,7 @@ public class UsersController {
 			return respJson;
 		}
 	}
-	
+
 	/**
 	 * 修改密码
 	 * 

@@ -174,7 +174,11 @@
 		function LoadSelAddress() {
 			$('#sel-address').combobox({
 				url : '/YuJianRoom/Users/GetUserAddress',
-				method : "get"
+				method : "get",
+				onLoadSuccess : function(){
+            		var val = $(this).combobox('getData');
+           			$(this).combobox('setValue', val[0].id);
+                }
 			});
 		}
 

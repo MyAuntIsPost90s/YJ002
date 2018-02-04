@@ -67,9 +67,10 @@ public class UserIntroducesController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "GetCount", method = RequestMethod.POST)
-	public long getCount(Integer userintroducestatus, String condition) {
+	public long getCount(Integer userintroducestatus, String condition,String address) {
 		try {
-			return userIntroducesService.getCount(null, userintroducestatus, UserIntroduceType.RED, null);
+			long count = userIntroducesService.getCount(condition, userintroducestatus, UserIntroduceType.RED, address);
+			return count;
 		} catch (Exception e) {
 			return -1;
 		}

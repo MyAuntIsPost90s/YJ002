@@ -7,6 +7,9 @@
 		SELECT f.*,u.realName,u.phone FROM feedbacks f
 		LEFT JOIN users u ON f.userID=u.userID
 		WHERE u.userID IS NOT NULL and f.feedbacktype=#{feedbacktype} and f.feedbackstatus=#{feedbackstatus}
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 		Order by f.feedbacktime desc
 		limit #{skip},#{take}
 	</select>
@@ -26,10 +29,17 @@
 		SELECT count(*) FROM feedbacks f
 		LEFT JOIN users u ON f.userID=u.userID
 		WHERE u.userID IS NOT NULL and f.feedbacktype=#{feedbacktype} and f.feedbackstatus=#{feedbackstatus}
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 	</select>
 	<select id="getAllCount" resultType="java.lang.Integer">
-		select COUNT(*) from feedbacks
+		select COUNT(*) from feedbacks f
+		LEFT JOIN users u ON f.userID=u.userID
 		where feedbackstatus=#{feedbackstatus}
+		<if test="address!=null">
+			and address like #{address}
+		</if>
 	</select>
 	
 	<insert id="add" parameterType="yujian.models.FeedBacks">

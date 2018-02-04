@@ -89,7 +89,7 @@
 				<option value="190-200">190-200</option>
 			</select>
 			地址：
-			<select id="sel-address" name="address" class="easyui-combobox" style="width: 80px" 
+			<select id="sel-address" name="address" style="width: 80px" 
 			data-options="editable:false
 			,panelHeight:'auto'
 			,textField:'text'
@@ -361,6 +361,7 @@
 
     <script type="text/javascript">
     	var sysconfig=null;
+    	var user=null;
     	 
         $(function () {
             loadSysConfig();
@@ -408,11 +409,18 @@
         }
         
         function LoadSelAddress(){
-        	$('#sel-address').combobox({url:'/YuJianRoom/Users/GetUserAddress'
-        		,method:"get"});
+        	$('#sel-address').combobox({
+        		url:'/YuJianRoom/Users/GetUserAddress'
+        		,method:"get"
+        		,onLoadSuccess : function(){
+            		var val = $(this).combobox('getData');
+           			$(this).combobox('setValue', val[0].id);
+                }
+        	});
         }
 
-        function LoadData() {
+        //加载用户列表
+        function LoadData() {        	
             var pager;
             pager = $('#tt').datagrid({ 
             	url: '/YuJianRoom/Users/GetList?address='+$('#sel-address').combobox('getValue')

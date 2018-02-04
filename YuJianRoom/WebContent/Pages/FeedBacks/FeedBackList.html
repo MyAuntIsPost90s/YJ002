@@ -31,6 +31,9 @@
 	
 	 <div id="tb" style="padding:5px;height:auto">
         <div>
+     		 地区:
+        	<select id="province" data-options="required:true,editable:false,panelHeight:'200px'" style="width:100px">
+            </select>省
 			塞选条件：
 			<select style="width: 80px" class="easyui-combobox" id="feedbackstatus" data-options="editable:false,panelHeight:'auto'">
 				<option value="0" selected="selected">未处理</option>
@@ -41,7 +44,7 @@
     </div>
     
     <!-- 弹窗部分 -->
-    <div id="ShowDialog" class="easyui-dialog" style="width:320px;height:250px"
+    <div id="ShowDialog" class="easyui-dialog" style="width:320px;height:280px"
          data-options="title:'基本信息',buttons:'#bb',modal:true,closed:true">
         <div style="padding:10px;">
         <form id="ff" action="" method="post" enctype="multipart/form-data" >
@@ -60,6 +63,8 @@
                 </tr>
             </table>
         </form>
+        <p><a class="font-blue" onclick="ShowUserInfo()">1.查看用户详情</a></p>
+        <p><a class="font-blue" onclick="ShowUserList()">2.用户快查</a></p>
         </div>
     </div>
     <div id="bb">
@@ -70,16 +75,79 @@
 		取消
         </a>
     </div>
+    
+    <!-- 加载用户详情组件 -->
+    <div class="easyui-panel" data-options="href:'/YuJianRoom/Pages/Users/UserInfoModel.html'"></div>
+    <!-- 用户快查组件 -->
+    <div class="easyui-panel" data-options="href:'/YuJianRoom/Pages/Users/UserListModel.html'"></div>
 
     <script type="text/javascript">
-        $(function () {
-            LoadData()
-        });
+	    var user=null;
+	    $(function () {
+	    	$.ajaxSetup({async : false });
+	    	LoadMe();
+	    	LoadProvince();
+	    	$.ajaxSetup({async : true });
+	        LoadData()
+	    });
+
+	    //查看用户详情
+        function ShowUserInfo(){
+        	var rows = $('#tt').datagrid('getSelections');
+            if (rows.length != 1) {
+                $.messager.alert('提示', '请选中一个选项', 'info');
+                return;
+            }
+            UserInfoModel.show(rows[0].userid);
+        }
+        
+        //用户快查
+        function ShowUserList(){
+        	 UserListModel.show();
+        }
+
+        
+        //加载省
+        function LoadProvince(){
+        	var arrs=[];
+        	if(user.usertype==4){
+        		arrs.push({id:"",text:"全部"});
+        	}
+        	for(var i=0;i<LAreaData.length;i++){
+        		if(user.usertype!=4){
+        			if(user.address==LAreaData[i].name){
+        				arrs.push({ id:LAreaData[i].name,text:LAreaData[i].name });
+        			}
+        		}
+        		else{
+        			arrs.push({ id:LAreaData[i].name,text:LAreaData[i].name });
+        		}
+        	}
+        	
+        	$('#province').combobox({
+            	valueField:"id",
+            	textField:"text",
+            	onLoadSuccess : function(){
+        			var val = $(this).combobox('getData');
+            		$(this).combobox('setValue', val[0].id);
+                }
+            })
+        	$('#province').combobox('loadData',arrs);
+        }
+        
+      	//加载个人信息
+    	function LoadMe(){
+    		$.get('/YuJianRoom/Users/GetNowUser'
+    				,function(data){
+    			user=data;
+    		},'json');
+    	}
 
         function LoadData() {
             var pager= $('#tt').datagrid({ 
             	url: '/YuJianRoom/FeedBacks/GetList?feedbacktype=3&feedbackstatus='
-            			+$('#feedbackstatus').val(),
+            			+$('#feedbackstatus').val()
+            			+'&address='+$('#province').combobox('getValue'),
             	onDblClickRow: function (index, row) {
            			$('#tt').datagrid('unselectAll');
            			$('#tt').datagrid('selectRow',index);
@@ -106,6 +174,11 @@
                     text:"删除",
                     handler: function () {
                     	DelClick();//删除-处理  
+                    }
+                },{
+                    text:"用户快查",
+                    handler: function () {
+                    	 UserListModel.show();
                     }
                 }],
                 onBeforeRefresh: function () {

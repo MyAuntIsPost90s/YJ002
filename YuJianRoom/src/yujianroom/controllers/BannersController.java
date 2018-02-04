@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import net.coobird.thumbnailator.Thumbnails;
 import yujian.models.Banners;
+import yujian.models.Users;
 import yujian.service.BannersService;
 import yujian.utilities.FileHelper;
 import yujian.utilities.WebMapHelper;
@@ -25,6 +26,7 @@ import yujianroom.common.EUIComboBoxData;
 import yujianroom.common.RandomNum;
 import yujianroom.common.ResultEasyUIList;
 import yujianroom.common.Skin;
+import yujianroom.common.UserType;
 
 @Controller
 @RequestMapping(value = "Banners", produces = "application/json;charset=utf-8")
@@ -61,16 +63,19 @@ public class BannersController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "GetAddress", method = RequestMethod.POST)
-	public List<EUIComboBoxData> getAddress() {
+	public List<EUIComboBoxData> getAddress(HttpServletRequest request) {
 		try {
+			Users user = (Users) request.getSession().getAttribute(Skin.USER);
 			List<EUIComboBoxData> list = new ArrayList<>();
-
 			List<String> strs = bannersService.getAddress();
 			strs.forEach(o -> {
+				if (user.getUsertype() != UserType.ROOT && o.equals("")) {
+					return;
+				}
+				String value = o.split(" ")[0]; // 只展示省
 				EUIComboBoxData item = new EUIComboBoxData();
-				item.setId(o);
-				item.setText(o.equals("") ? "全国" : o);
-
+				item.setId(value);
+				item.setText(value.equals("") ? "全国" : value);
 				list.add(item);
 			});
 			return list;

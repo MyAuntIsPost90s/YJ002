@@ -1,3 +1,4 @@
+//用户展示模块
 var UserInfoModel = {
 	showImg : function(id, videourl) {
 		// 加载视频
@@ -42,6 +43,7 @@ var UserInfoModel = {
 	}
 }
 
+//红娘展示模块
 var MatchmackerModel = {
 	show : function(userid) {
 		$('#matchmaker-form').form({
@@ -59,5 +61,19 @@ var MatchmackerModel = {
 	},
 	dialog : function(params) {
 		$('#matchmaker-dialog').dialog(params);
+	}
+}
+
+//用户快查模块
+var UserListModel={
+	show : function() {
+		$('#userlist-dialog').dialog('open');
+		$('#userlist-table').datagrid({ url: '/YuJianRoom/Users/GetList?condition='+$('#userlist-condition').val() });
+		$('#userlist-searchbtn').click(function(){
+			$('#userlist-table').datagrid({ url: '/YuJianRoom/Users/GetList?condition='+$('#userlist-condition').val() });
+		})
+	},
+	close : function() {
+		$('#userlist-dialog').dialog('close');
 	}
 }

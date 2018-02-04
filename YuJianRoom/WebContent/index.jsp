@@ -1,3 +1,4 @@
+<%@page import="yujianroom.common.UserType"%>
 <%@page import="yujian.models.Users"%>
 <%@page import="yujianroom.common.Skin"%>
 <%@ page language="java" contentType="text/html; charset=Utf-8"
@@ -21,7 +22,7 @@
 	<script src="/YuJianRoom/Contents/js/jquery.flot.js" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/md5.js" type="text/javascript" ></script>
 	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
-	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.0" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.1" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/ajaxFileUpload.js?a=1.5"></script>
 	<style>
     .theme-header-layout{
@@ -126,17 +127,20 @@
                         
                         <div title="广告设置">
                             <ul class="easyui-datalist" data-options="border:false,fit:true">
-                                <li><span data-href="/YuJianRoom/Pages/Adverts/List.html" >插入广告</span></li>
+                                <%if(user.getUsertype()==UserType.ROOT){%><li><span data-href="/YuJianRoom/Pages/Adverts/List.html" >插入广告</span></li><%} %>
                                 <li><span data-href="/YuJianRoom/Pages/Banners/IndexList.html">首页轮播</span></li>
-                                <li><span data-href="/YuJianRoom/Pages/Banners/ExpressionShopList.html">表情轮播</span></li>
+                                <%if(user.getUsertype()==UserType.ROOT){%><li><span data-href="/YuJianRoom/Pages/Banners/ExpressionShopList.html">表情轮播</span></li><%} %>
                             </ul>
                         </div>
+                        <%if(user.getUsertype()==UserType.ROOT){%>
                         <div title="商城管理">
                          	<ul class="easyui-datalist" data-options="border:false,fit:true">
                                 <li><span data-href="/YuJianRoom/Pages/Gifts/List.html" >礼物管理</span></li>
                                 <li><span data-href="/YuJianRoom/Pages/ExpressionBags/List.html">表情管理</span></li>
                             </ul>
                         </div>
+                        <%} %>
+                        <%if(user.getUsertype()==UserType.ROOT){%>
                         <div title="财务管理">
                          	<ul class="easyui-datalist" data-options="border:false,fit:true">
                                 <li><span data-href="/YuJianRoom/Pages/Orders/ExpressionInCome.html" >表情收入</span></li>
@@ -146,6 +150,7 @@
                                 <li><span data-href="/YuJianRoom/Pages/Orders/RechargeInCome.html">充值收入</span></li>
                             </ul>
                         </div>
+                        <%} %>
                         <div title="<span id='feedback-item'>反馈管理</span>">
                          	<ul class="easyui-datalist" data-options="border:false,fit:true">
                                 <li><span id="item-confession" data-href="/YuJianRoom/Pages/FeedBacks/CourtList.html" >告白求助</span></li>
@@ -159,7 +164,7 @@
                         <div title="系统管理">
                         	<ul class="easyui-datalist" data-options="border:false,fit:true">
                         		<li><span data-href="/YuJianRoom/Pages/Mine.html" >个人中心</span></li>
-                                <li><span data-href="/YuJianRoom/Pages/SysSet.html" >系统设置</span></li>
+                                <%if(user.getUsertype()==UserType.ROOT){%><li><span data-href="/YuJianRoom/Pages/SysSet.html" >系统设置</span></li><%} %>
                             </ul>
                         </div>
                     </div>
@@ -263,7 +268,7 @@
     //加载未处理红人数量
     function loadRedCount(){
     	$.post('/YuJianRoom/UserIntroduces/GetCount'
-    			,{userintroducestatus:0}
+    			,{userintroducestatus:0,address:'<%=user.getUsertype()==UserType.ROOT?"":user.getAddress()%>'}
     			,function(data){
     				if(data>0){
     					data=data>99?99:data;

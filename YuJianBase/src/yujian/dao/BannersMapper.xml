@@ -10,7 +10,7 @@
 			and bannertype=#{bannertype}
 		</if>
 		<if test="address!=null">
-			and address=#{address}
+			and address like #{address}
 		</if>
 	</select>
 	<select id="getSingle" resultType="yujian.models.Banners">

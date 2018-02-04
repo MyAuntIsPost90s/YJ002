@@ -86,12 +86,22 @@
 
     <script type="text/javascript">
     	var bannertype=0;
+    	var user=null;
         $(function () {
         	$.ajaxSetup({async : false });
+        	LoadMe();
             LoadSelAddress();
             LoadData();
             $.ajaxSetup({async : true });
         });
+        
+      	//加载个人信息
+    	function LoadMe(){
+    		$.get('/YuJianRoom/Users/GetNowUser'
+    				,function(data){
+    			user=data;
+    		},'json');
+    	}
 
         $('#ff').form({
             onSubmit: function () {
@@ -133,7 +143,12 @@
         
         function LoadSelAddress(){
         	$('#sel-address').combobox({url:'/YuJianRoom/Banners/GetAddress'
-        		,method:"post"});
+        		,method:"post"
+      			,onLoadSuccess : function(){
+          			var val = $(this).combobox('getData');
+              		$(this).combobox('setValue', val[0].id);
+                }
+        	});
         }
         
         function LoadData() {
@@ -175,8 +190,8 @@
         	valueField:"id",
         	textField:"text",
         	onLoadSuccess : function(){
-        		var val = $(this).combobox('getData');
-       			$(this).combobox('setValue', val[0].id);
+    			var val = $(this).combobox('getData');
+        		$(this).combobox('setValue', val[0].id);
             },
             onChange:function(){
 	        	LoadCity($(this).combobox('getValue'))
@@ -198,9 +213,18 @@
         })
         function LoadProvince(){
         	var arrs=[];
-        	arrs.push({id:"-1",text:"--请选择--"});
+        	if(user.usertype==4){
+        		arrs.push({id:"-1",text:"--请选择--"});
+        	}
         	for(var i=0;i<LAreaData.length;i++){
-        		arrs.push({ id:parseInt(LAreaData[i].id),text:LAreaData[i].name });
+        		if(user.usertype!=4){
+        			if(user.address==LAreaData[i].name){
+        				arrs.push({ id:parseInt(LAreaData[i].id),text:LAreaData[i].name });
+        			}
+        		}
+        		else{
+        			arrs.push({ id:parseInt(LAreaData[i].id),text:LAreaData[i].name });
+        		}
         	}
         	
         	$('#province').combobox('loadData',arrs);

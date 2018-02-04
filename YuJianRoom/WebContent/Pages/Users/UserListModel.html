@@ -1,0 +1,34 @@
+<meta charset="UTF-8">
+<!-- 弹窗部分 -->
+<div id="userlist-dialog" class="easyui-dialog"
+	style="width: 650px; height: 500px"
+	data-options="title:'用户快查',modal:true,closed:true">
+	<div style="padding: 5px;">
+		<div id="select-user">
+			<table id="userlist-table" title="用户列表" style="width: 100%; height: 390px"
+				data-options='url:"/YuJianRoom/Users/GetList"
+		           ,fitColumns:"true"
+		           ,toolbar:"#tb-user"
+				   ,rownumbers:"true"
+				   ,singleSelect:true
+		           ,pagination:"true"'>
+				<thead>
+					<tr>
+						<th data-options="field:'userid',width:100,align:'center'">编号</th>
+						<th data-options="field:'realname',width:100,align:'center'">姓名</th>
+						<th data-options="field:'birthday',width:100,align:'center'">出生日期</th>
+						<th data-options="field:'phone',width:100,align:'center'">手机号</th>
+					</tr>
+				</thead>
+			</table>
+			<div id="tb-user" style="padding: 5px; height: auto">
+				<div>
+					查询条件： <input id="userlist-condition" class="easyui-textbox" type="text"
+						name="condition" />
+					<button id="userlist-searchbtn" type="button"
+						class="easyui-linkbutton" data-options='iconCls:"icon-search"'>确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

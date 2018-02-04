@@ -8,17 +8,19 @@ import yujian.models.FeedBacks;
 import yujian.models.FeedBacksAndUser;
 
 public interface FeedBacksMapper {
-	public List<FeedBacksAndUser> getListByPage(@Param("skip") long skip, @Param("take") long take,
-			@Param("feedbacktype") int feedbacktype, @Param("feedbackstatus") int feedbackstatus);
+	public List<FeedBacksAndUser> getListByPage(@Param("skip") long skip,
+			@Param("take") long take, @Param("feedbacktype") int feedbacktype,
+			@Param("feedbackstatus") int feedbackstatus,@Param("address") String address);
 
 	public List<FeedBacksAndUser> getListByIDAndType(@Param("userid") long userid,
 			@Param("feedbacktype") int feedbacktype, @Param("feedbackstatus") int feedbackstatus);
 
 	public FeedBacksAndUser getSingle(String feedbackid);
 
-	public int getAllCount(@Param("feedbackstatus") int feedbackstatus);
+	public int getAllCount(@Param("address") String address, @Param("feedbackstatus") int feedbackstatus);
 
-	public long getCount(@Param("feedbacktype") int feedbacktype, @Param("feedbackstatus") int feedbackstatus);
+	public long getCount(@Param("address") String address, @Param("feedbacktype") int feedbacktype,
+			@Param("feedbackstatus") int feedbackstatus);
 
 	public int add(FeedBacks model);
 
