@@ -63,7 +63,8 @@
 		where 1=1
 		<if test="condition!=null and condition!=''">
 			and (realname like #{condition} or phone like #{condition}
-			or userid=REPLACE (#{condition}, '%', ''))
+			or userid=REPLACE (#{condition}, '%', '')
+			or birthday LIKE #{condition})
 		</if>
 		<if test="otherfunction!=null">
 			and otherfunction=#{otherfunction}
@@ -96,8 +97,9 @@
 		select * from users
 		where usertype=-1
 		<if test="condition!=null and condition!=''">
-			and realname like #{condition} or phone like #{condition}
+			and (realname like #{condition} or phone like #{condition}
 			or userid=REPLACE (#{condition}, '%', '')
+			or birthday LIKE #{condition})
 		</if>
 		<if test="address!=null and address!=''">
 			and address like #{address}
@@ -179,7 +181,8 @@
 		where 1=1 
 		<if test="condition!=null and condition!=''">
 			and (realname like #{condition} or phone like #{condition}
-			or userid=REPLACE (#{condition}, '%', ''))
+			or userid=REPLACE (#{condition}, '%', '')
+			or birthday LIKE #{condition})
 		</if>
 		<if test="address!=null and address!=''">
 			and address like #{address}
@@ -207,8 +210,9 @@
 		select Count(*) from users
 		where usertype=-1 
 		<if test="condition!=null and condition!=''">
-			and realname like #{condition} or phone like #{condition}
+			and (realname like #{condition} or phone like #{condition}
 			or userid=REPLACE (#{condition}, '%', '')
+			or birthday LIKE #{condition})
 		</if>
 		<if test="address!=null">
 			and address like #{address}

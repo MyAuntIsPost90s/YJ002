@@ -198,6 +198,14 @@
         
         function LoadUserData() {
             var pager;
+            $('#tt-user').datagrid({//添加双击操作
+            	onDblClickRow: function (index, row) {
+          			$('#tt-user').datagrid('unselectAll');
+          			$('#tt-user').datagrid('selectRow',index);
+          			var rows = $('#tt-user').datagrid('getSelections');
+                    UserInfoModel.show(rows[0].userid);
+            	}
+            });
             if ($('#user-condition').val() == '') {
                 pager = $('#tt-user').datagrid({ url: '/YuJianRoom/Users/GetList' }).datagrid('getPager');
             }

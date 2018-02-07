@@ -22,7 +22,7 @@
 	<script src="/YuJianRoom/Contents/js/jquery.flot.js" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/md5.js" type="text/javascript" ></script>
 	<script src="/YuJianRoom/Contents/js/LAreaData.js" type="text/javascript"></script>
-	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.1" type="text/javascript"></script>
+	<script src="/YuJianRoom/Contents/js/common.js?version=0.0.2" type="text/javascript"></script>
 	<script src="/YuJianRoom/Contents/js/ajaxFileUpload.js?a=1.5"></script>
 	<style>
     .theme-header-layout{

@@ -68,6 +68,16 @@ var MatchmackerModel = {
 var UserListModel={
 	show : function() {
 		$('#userlist-dialog').dialog('open');
+		if($('#userinfo-form').length>0){	//查看详情主键存在，添加双击查看详情
+			$('#userlist-table').datagrid({
+				onDblClickRow: function (index, row) {
+          			$('#userlist-table').datagrid('unselectAll');
+          			$('#userlist-table').datagrid('selectRow',index);
+          			var rows = $('#userlist-table').datagrid('getSelections');
+                    UserInfoModel.show(rows[0].userid);
+            	}
+			});
+		}
 		$('#userlist-table').datagrid({ url: '/YuJianRoom/Users/GetList?condition='+$('#userlist-condition').val() });
 		$('#userlist-searchbtn').click(function(){
 			$('#userlist-table').datagrid({ url: '/YuJianRoom/Users/GetList?condition='+$('#userlist-condition').val() });

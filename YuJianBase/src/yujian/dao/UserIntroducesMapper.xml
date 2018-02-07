@@ -14,8 +14,9 @@
 		LEFT JOIN users iu ON ui.userID=iu.userID
 		where u.userid is not null and iu.userid is not null 
 		<if test="condition!=null and condition!=''">
-			and u.realname like #{condition} or u.phone like #{condition}
+			and (u.realname like #{condition} or u.phone like #{condition}
 			or u.userid=REPLACE (#{condition}, '%', '')
+			or u.birthday LIKE #{condition})
 		</if>
 		<if test="address!=null and address!=''">
 			and u.address like #{address}
@@ -49,7 +50,9 @@
 		FROM userintroduces ui LEFT JOIN users u ON ui.uIUserID=u.userID
 		where u.userid is not null
 		<if test="condition!=null and condition!=''">
-			and (u.realname like #{condition} or u.phone like #{condition})
+		and (u.realname like #{condition} or u.phone like #{condition}
+			or u.userid=REPLACE (#{condition}, '%', '')
+			or u.birthday LIKE #{condition})
 		</if>
 		<if test="address!=null and address!=''">
 			and address like #{address}
