@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,7 +68,7 @@ public class UserIntroducesController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "GetCount", method = RequestMethod.POST)
-	public long getCount(Integer userintroducestatus, String condition,String address) {
+	public long getCount(Integer userintroducestatus, String condition, String address) {
 		try {
 			long count = userIntroducesService.getCount(condition, userintroducestatus, UserIntroduceType.RED, address);
 			return count;
@@ -84,6 +85,7 @@ public class UserIntroducesController {
 	 * @return
 	 */
 	@ResponseBody
+	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping(value = "AddMore", method = RequestMethod.POST)
 	public String addMore(String ids, long userid) {
 		try {

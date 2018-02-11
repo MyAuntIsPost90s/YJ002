@@ -73,7 +73,7 @@
 		insert into userintroduces(uiuserid,userid,userintroducestatus,userintroducetype)
 		values
 		<foreach collection="list" item="item" separator=",">
-		(#{item.uiuserid},#{item.userid},#{item.userintroducestatus},#{userintroducetype})
+		(#{item.uiuserid},#{item.userid},#{item.userintroducestatus},#{item.userintroducetype})
 		</foreach>;
 	</insert>
 	<update id="update" parameterType="yujian.models.UserIntroduces">
