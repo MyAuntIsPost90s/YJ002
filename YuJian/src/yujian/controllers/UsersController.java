@@ -79,6 +79,9 @@ public class UsersController {
 
 			if (aList != null && aList.size() > 0 && list != null && list.size() > sysConfigs.getIntervalnum()) {
 				for (int i = 0; i < aList.size(); i++) {
+					if ((i + 1) * sysConfigs.getIntervalnum() + i > list.size()) {
+						break;
+					}
 					UsersView temp = new UsersView();
 					temp.setRealname(aList.get(i).getAdverttitle());
 					temp.setHeadimgurl(aList.get(i).getAdvertlogourl());
