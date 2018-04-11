@@ -119,11 +119,11 @@ public class UsersController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/GetSingle", method = RequestMethod.GET)
-	public Users getSingle(HttpServletRequest request,long id) {
+	public Users getSingle(HttpServletRequest request, long id) {
 		try {
-			Users users = (Users)request.getSession().getAttribute(Skin.USER);
+			Users users = (Users) request.getSession().getAttribute(Skin.USER);
 			Users model = userService.getSingleByUserID(id);
-			if(users.getUsertype()!=UserType.ROOT&&!model.getAddress().contains(users.getAddress())){
+			if (users.getUsertype() != UserType.ROOT && !model.getAddress().contains(users.getAddress())) {
 				model.setHeight("权限不足");
 				model.setBloodtype("权限不足");
 				model.setHobby("权限不足");
@@ -192,20 +192,23 @@ public class UsersController {
 			if (model.getUsertype() == UserType.NOMAL || model.getUsertype() == UserType.VIP
 					|| model.getUsertype() == UserType.MATCHMAKER) {
 				Users defaultuser = userService.getSingleByMatchmakerType(MatchmakerType.DEFAULT);
-				// 配置默认红娘
-				UserIntroduces uIntroduces = new UserIntroduces();
-				uIntroduces.setUiuserid(model.getUserid());
-				uIntroduces.setUserid(defaultuser.getUserid());
-				uIntroduces.setUserintroducestatus(UserIntroduceStatus.PASS);
-				uIntroduces.setUserintroducetype(UserIntroduceType.USER);
+				if (defaultuser != null) {
+					// 配置默认红娘
+					UserIntroduces uIntroduces = new UserIntroduces();
+					uIntroduces.setUiuserid(model.getUserid());
+					uIntroduces.setUserid(defaultuser.getUserid());
+					uIntroduces.setUserintroducestatus(UserIntroduceStatus.PASS);
+					uIntroduces.setUserintroducetype(UserIntroduceType.USER);
 
-				List<UserIntroduces> list = new ArrayList<>();
-				list.add(uIntroduces);
-				uiservice.deleteMore(list);
-				uiservice.add(uIntroduces);
+					List<UserIntroduces> list = new ArrayList<>();
+					list.add(uIntroduces);
+					uiservice.deleteMore(list);
+					uiservice.add(uIntroduces);
+				}
 			}
 			return "添加成功";
 		} catch (Exception e) {
+			Logger.getRootLogger().error(e);
 			return "添加失败";
 		}
 	}
@@ -258,22 +261,25 @@ public class UsersController {
 			if (model.getUsertype() == UserType.NOMAL || model.getUsertype() == UserType.VIP
 					|| model.getUsertype() == UserType.MATCHMAKER) {
 				Users defaultuser = userService.getSingleByMatchmakerType(MatchmakerType.DEFAULT);
-				// 配置默认红娘
-				UserIntroduces uIntroduces = new UserIntroduces();
-				uIntroduces.setUiuserid(model.getUserid());
-				uIntroduces.setUserid(defaultuser.getUserid());
-				uIntroduces.setUserintroducestatus(UserIntroduceStatus.PASS);
-				uIntroduces.setUserintroducetype(UserIntroduceType.USER);
+				if (defaultuser != null) {
+					// 配置默认红娘
+					UserIntroduces uIntroduces = new UserIntroduces();
+					uIntroduces.setUiuserid(model.getUserid());
+					uIntroduces.setUserid(defaultuser.getUserid());
+					uIntroduces.setUserintroducestatus(UserIntroduceStatus.PASS);
+					uIntroduces.setUserintroducetype(UserIntroduceType.USER);
 
-				List<UserIntroduces> list = new ArrayList<>();
-				list.add(uIntroduces);
-				uiservice.deleteMore(list);
-				uiservice.add(uIntroduces);
+					List<UserIntroduces> list = new ArrayList<>();
+					list.add(uIntroduces);
+					uiservice.deleteMore(list);
+					uiservice.add(uIntroduces);
+				}
 			}
 
 			userService.update(model);
 			return "修改成功";
 		} catch (Exception e) {
+			Logger.getRootLogger().error(e);
 			return "修改失败";
 		}
 	}

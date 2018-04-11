@@ -24,9 +24,10 @@
 	<script>
 		var expressionbagid='${id}';
 		var expressionbag=null;
-		var haved=0;
+		var haved=getQueryString("haved");
 		
 		$(function(){
+			haved = parseInt(haved == null?'0':haved);
 			loadTitle();
 			loadExpressions();
 			

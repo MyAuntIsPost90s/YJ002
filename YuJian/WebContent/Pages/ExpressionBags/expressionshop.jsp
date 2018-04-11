@@ -81,7 +81,7 @@
 						var html='';
 						for(var i=0;i<data.length;i++){
 							var temp='<li class="expression-item">'
-			                		+'<a href="/YuJian/Expressions?id={2}"><img src="{0}" alt=""></a>'
+			                		+'<a href="/YuJian/Expressions?id={2}&haved=1"><img src="{0}" alt=""></a>'
 			                		+'<div>{1}</div>'
 			                		+'</li>';
 			            	
