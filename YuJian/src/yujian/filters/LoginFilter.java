@@ -44,7 +44,7 @@ import yujian.utilities.DESHelper;*/
 // ,"/MyInfo","/MyInfoMatchmaker","/UpdateHobby","/UpdateRedHobby"
 // ,"/UpdateBaseInfo","/UpdateRedBaseInfo","/UpdateSelectCondition"
 // ,""})
-@WebFilter(filterName = "LoginFilter", urlPatterns = { "/*" })
+//@WebFilter(filterName = "LoginFilter", urlPatterns = { "/*" })
 public class LoginFilter implements Filter {
 
 	UsersService usersService;
@@ -62,14 +62,10 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest hrequest = (HttpServletRequest) request;
-		if (1 == 1) {
-			chain.doFilter(request, response);
-			return;
-		}
-
 		// 配置不过滤
 		if (hrequest.getRequestURI().contains("Login") || hrequest.getRequestURI().contains("Share")
 				|| hrequest.getRequestURI().contains("GetOtherUserInfo")
+				|| hrequest.getRequestURI().contains("WxNotify")
 				|| hrequest.getRequestURI().contains("GetUserImgs") || hrequest.getRequestURI().contains("404")
 				|| hrequest.getRequestURI().contains("500") || hrequest.getRequestURI().contains("LoginErr")
 				|| hrequest.getRequestURI().contains("Contents")) {

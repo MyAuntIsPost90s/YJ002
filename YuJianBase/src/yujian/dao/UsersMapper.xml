@@ -263,6 +263,9 @@
 		,otherfunction=#{otherfunction}
 		,matchmakertype=#{matchmakertype}
 		,remark=#{remark}
+		<if test="riches != null">
+			,riches=#{riches}
+		</if>
 		where userid=#{userid}
 	</update>
 	<delete id="delete">

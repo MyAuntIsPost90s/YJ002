@@ -157,6 +157,7 @@ public class PayController {
 	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping(value = "WxNotify")
 	public void wxNotify(HttpServletRequest request, HttpServletResponse response) {
+		Skin.PayLock.lock();
 		try {
 			try (InputStream inStream = request.getInputStream();
 					ByteArrayOutputStream outSteam = new ByteArrayOutputStream()) {
@@ -170,8 +171,6 @@ public class PayController {
 				Map<String, String> map = XMLHelper.doXMLParse(result);
 				if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
 					Users user = usersService.getSingleByWXOID(map.get("openid"));
-
-					Skin.PayLock.lock();
 					int cost = ConvertHelper.convertToInt(map.get("total_fee")) / 100;// 这里的total_fee以分为单位
 					String orderid = map.get("out_trade_no");
 					// 生成订单
@@ -182,7 +181,7 @@ public class PayController {
 					orders.setOrdertype(OrderType.RECHARGE);
 					orders.setUserid(user == null ? 0 : user.getUserid());
 
-					user.setRiches(user.getRiches() + cost);
+					user.setRiches(user.getRiches() +  (cost * 10));
 					if (cost != 1000) {
 						user.setGoldbalance(user.getGoldbalance() + (cost * 10));
 					} else {
@@ -197,15 +196,16 @@ public class PayController {
 
 					ordersService.add(orders);
 					usersService.update(user);
-
+					Logger.getRootLogger().error(String.format("编号为%s用户充值%s成功", user.getUserid(),cost));
 					// TODO 对数据库的操作
 					response.getWriter().write(setXML("SUCCESS", "")); // 告诉微信服务器，我收到信息了，不要在调用回调action了
 				}
 			}
 		} catch (Exception e) {
 			Logger.getRootLogger().error(e);
+		}finally {
+			Skin.PayLock.unlock();
 		}
-		Skin.PayLock.unlock();
 	}
 
 	public String setXML(String return_code, String return_msg) {
